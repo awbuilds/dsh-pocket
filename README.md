@@ -35,12 +35,14 @@ surface, and the desktop dialog listing it:
 
 ## Quick start
 
-**Inside DeepSeek Harness** — open **Plugins** in the left sidebar and install a bundle
-from one of:
+**Inside DeepSeek Harness** — open **Plugins** in the left sidebar, click **Add
+plugin**, and install from one of:
 
-- the local package directory: `packages/dsh-pocket`
+- **npm registry (recommended):** keep **Registry** on **Official npm registry**
+  and enter `@awbuilds/dsh-pocket@0.0.4`
 - the release tarball: `awbuilds-dsh-pocket-0.0.4.tgz`
-- the npm package (once published): `@awbuilds/dsh-pocket@0.0.4`
+- the local package directory: `packages/dsh-pocket`
+- the GitHub repository: `https://github.com/awbuilds/dsh-pocket`
 
 Enable the **`@awbuilds/dsh-pocket`** bundle. If **Link phone** does not appear
 at the bottom of the sidebar, restart the app once.

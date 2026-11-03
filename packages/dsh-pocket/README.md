@@ -34,10 +34,11 @@ over your local network.
 The Desktop profile is managed by the app; DSH 0.2.1's CLI rejects
 `dsh plugin --profile desktop`. Install from inside the running app:
 
-1. Open **Plugins** in the left sidebar.
-2. Install a bundle from a local path, the release tarball
-   (`awbuilds-dsh-pocket-0.0.4.tgz`), or the npm package
-   (`@awbuilds/dsh-pocket@0.0.4`, once published).
+1. Open **Plugins** in the left sidebar and click **Add plugin**.
+2. Keep **Registry** on **Official npm registry** and enter
+   `@awbuilds/dsh-pocket@0.0.4`.
+   Alternatively, install the release tarball (`awbuilds-dsh-pocket-0.0.4.tgz`)
+   or the local package directory.
 3. Enable the **`@awbuilds/dsh-pocket`** bundle.
 4. If **Link phone** does not appear, restart DeepSeek Harness once.
 

@@ -18,15 +18,17 @@ The **Desktop profile is managed exclusively by the app**. DSH 0.2.1's CLI
 rejects `dsh plugin --profile desktop` from a terminal, whether or not the app
 is running. Use the app's own installer:
 
-1. Open **Plugins** in the left sidebar in DeepSeek Harness.
-2. Choose to install a plugin/bundle from a path or file.
-3. Provide one of:
+1. Open **Plugins** in the left sidebar in DeepSeek Harness and click **Add
+   plugin**.
+2. Provide one of:
+   - the npm package `@awbuilds/dsh-pocket@0.0.4`, with **Registry** set to
+     **Official npm registry**
+   - the release tarball: `awbuilds-dsh-pocket-0.0.4.tgz`
    - the local package directory:
      `~/RealWorldProjects/deepseek_mobile/packages/dsh-pocket`
-   - the release tarball: `awbuilds-dsh-pocket-0.0.4.tgz`
-   - after npm publication: `@awbuilds/dsh-pocket@0.0.4`
-4. Enable the **`@awbuilds/dsh-pocket`** bundle.
-5. If **Link phone** does not appear at the bottom of the sidebar, restart
+   - the GitHub repository: `https://github.com/awbuilds/dsh-pocket`
+3. Enable the **`@awbuilds/dsh-pocket`** bundle.
+4. If **Link phone** does not appear at the bottom of the sidebar, restart
    DeepSeek Harness once.
 
 The app's installer runs the profile's package manager and records the bundle in

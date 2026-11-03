@@ -95,8 +95,8 @@ fresh, or remove the device in **Link phone** and pair again.
 
 Use the generated tarball instead: run `cd packages/dsh-pocket && npm pack` and
 select `awbuilds-dsh-pocket-0.0.4.tgz` in the Plugins page. Keep the tarball where
-it is; the profile references that path. The npm package is an alternative once
-published.
+it is; the profile references that path. The npm registry package
+(`@awbuilds/dsh-pocket@0.0.4`) is an alternative.
 
 ## Version mismatch after a DSH update
 
