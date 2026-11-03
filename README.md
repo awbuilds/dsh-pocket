@@ -7,6 +7,12 @@ network. A small, additive plugin starts a pairing-authenticated gateway in fron
 of the app's loopback web server; the phone loads the real DSH web UI, with a
 mobile navigation bar, a session sheet, and the desktop sidebar as a drawer.
 
+<p align="center">
+  <img src="site/assets/harness-phone-2x.png" width="360" alt="DSH Pocket running on a phone: a DeepSeek Harness session with streamed output, a diff card, the composer, and the Sessions / New / More bar." />
+</p>
+
+<p align="center"><em>The running app at 412 × 860 — Chrome on Android.</em></p>
+
 ## What it gives you
 
 - **QR pairing** from the desktop sidebar: scan once, stay paired for 30 days.

@@ -8,6 +8,12 @@ client plugin adds a phone navigation bar plus a "Link phone" dialog with a QR
 code. The phone loads the real DSH web UI — chat, tools, approvals, questions —
 over your local network.
 
+<p align="center">
+  <img src="https://awbuilds.github.io/dsh-pocket/assets/harness-phone-2x.png" width="320" alt="DSH Pocket running on a phone: a DeepSeek Harness session with streamed output, a diff card, the composer, and the Sessions / New / More bar." />
+</p>
+
+<p align="center"><em>The running app at 412 × 860 — Chrome on Android.</em></p>
+
 - Gateway: `0.0.0.0:7317` (falls back to the next ports), loopback upstream.
 - Pairing: six-digit code, QR, signed `HttpOnly` device cookie, 30-day lifetime.
 - Connected devices: a persistent per-device allowlist shown in the Link phone
