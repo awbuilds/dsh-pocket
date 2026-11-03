@@ -10,6 +10,8 @@ over your local network.
 
 - Gateway: `0.0.0.0:7317` (falls back to the next ports), loopback upstream.
 - Pairing: six-digit code, QR, signed `HttpOnly` device cookie, 30-day lifetime.
+- Connected devices: a persistent per-device allowlist shown in the Link phone
+  dialog, with last-seen time and one-tap removal.
 - Mobile UI: bottom bar, session sheet, drawer sidebar, safe-area and keyboard fixes.
 - No public exposure by default; optional TLS via `tlsCertFile` / `tlsKeyFile`.
 
@@ -20,8 +22,8 @@ The Desktop profile is managed by the app; DSH 0.2.1's CLI rejects
 
 1. Open **Plugins** in the left sidebar.
 2. Install a bundle from a local path, the release tarball
-   (`awbuilds-dsh-pocket-0.0.2.tgz`), or the npm package
-   (`@awbuilds/dsh-pocket@0.0.2`, once published).
+   (`awbuilds-dsh-pocket-0.0.3.tgz`), or the npm package
+   (`@awbuilds/dsh-pocket@0.0.3`, once published).
 3. Enable the **`@awbuilds/dsh-pocket`** bundle.
 4. If **Link phone** does not appear, restart DeepSeek Harness once.
 

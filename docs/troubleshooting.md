@@ -84,10 +84,17 @@ Do not use the CLI for it. Install from **Plugins** in the left sidebar in the r
 (local path, release tarball, or npm package name). If the Plugins page rejects a
 local path, quit the app and run `node scripts/install-desktop.mjs --manual`.
 
+## The phone loops with ERR_TOO_MANY_REDIRECTS
+
+Update to 0.0.3 or newer. Older builds reused a consumed DSH launch token and
+kept DSH's `SameSite=Strict` cookie, so reopening from the home screen looped.
+If a stale tab still shows the error after updating, close that tab, open the app
+fresh, or remove the device in **Link phone** and pair again.
+
 ## The app's Plugins page rejects the local package
 
 Use the generated tarball instead: run `cd packages/dsh-pocket && npm pack` and
-select `awbuilds-dsh-pocket-0.0.2.tgz` in the Plugins page. Keep the tarball where
+select `awbuilds-dsh-pocket-0.0.3.tgz` in the Plugins page. Keep the tarball where
 it is; the profile references that path. The npm package is an alternative once
 published.
 

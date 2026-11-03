@@ -12,6 +12,7 @@ import { createServer as createHttpsServer } from 'node:https'
 import type { Duplex } from 'node:stream'
 import type { PairError, PocketInfo, PocketStatus } from '../shared/types.ts'
 import { listLanAddresses, originsFor } from './addresses.ts'
+import type { DeviceRegistry } from './devices.ts'
 import {
   GATEWAY_COOKIE,
   PairingCodes,
@@ -62,6 +63,8 @@ export interface GatewayOptions {
   secret: Buffer
   /** Persist and return a new gateway secret. */
   rotateSecret: () => Promise<Buffer>
+  /** Allowlist of paired phones/tablets; the cookie sid must be present here. */
+  devices: DeviceRegistry
   version: string
   logger?: GatewayLogger
 }
@@ -86,6 +89,10 @@ function log(options: { logger?: GatewayLogger }, level: keyof GatewayLogger, me
 
 function clientIp(req: IncomingMessage): string {
   return req.socket.remoteAddress ?? 'unknown'
+}
+
+function headerValue(value: string | string[] | undefined): string | undefined {
+  return Array.isArray(value) ? value[0] : value
 }
 
 function sendJson(res: ServerResponse, status: number, body: unknown): void {
@@ -176,6 +183,7 @@ export class PocketGateway {
   readonly #options: GatewayOptions
   readonly #codes: PairingCodes
   readonly #cookies: SessionCookies
+  readonly #devices: DeviceRegistry
   readonly #limiter = new RateLimiter(PAIR_LIMIT_PER_MINUTE, 60_000)
   readonly #proxy: ReturnType<typeof createUpstreamProxy>
   readonly #sockets = new Set<Duplex>()
@@ -192,6 +200,7 @@ export class PocketGateway {
     this.#protocol = options.tls === undefined ? 'http:' : 'https:'
     this.#codes = new PairingCodes(options.pairing)
     this.#cookies = new SessionCookies(options.secret, options.cookieMaxAgeDays)
+    this.#devices = options.devices
     this.#proxy = createUpstreamProxy({
       upstreamOrigin: options.upstreamOrigin,
       launchToken: options.launchToken,
@@ -227,6 +236,11 @@ export class PocketGateway {
   /** Bind the listener, trying the configured port range. */
   async start(): Promise<void> {
     if (this.#closed) throw new Error('dsh-pocket: gateway is already closed')
+    try {
+      await this.#devices.load()
+    } catch (error) {
+      log(this.#options, 'warn', `dsh-pocket: cannot load paired devices (${String(error)})`)
+    }
     const attempts = this.#options.port === 0 ? 1 : Math.max(1, this.#options.portAttempts)
     let lastError: unknown
     for (let index = 0; index < attempts; index += 1) {
@@ -269,6 +283,7 @@ export class PocketGateway {
     this.#closed = true
     this.#state = 'disabled'
     this.#codes.dispose()
+    await this.#devices.close()
     this.#proxy.close()
     for (const socket of this.#sockets) {
       try {
@@ -302,7 +317,13 @@ export class PocketGateway {
     const secret = await this.#options.rotateSecret()
     this.#cookies.rotate(secret)
     this.#codes.rotate()
+    this.#devices.clear()
     return Date.now()
+  }
+
+  /** Remove one paired device; its cookie stops authenticating immediately. */
+  revokeDevice(id: string): boolean {
+    return this.#devices.remove(id)
   }
 
   /** LAN addresses the gateway is reachable at, primary first. */
@@ -344,6 +365,7 @@ export class PocketGateway {
       tls: this.#options.tls !== undefined,
       error: this.#error,
       version: this.#options.version,
+      devices: this.#devices.list(),
     }
   }
 
@@ -447,10 +469,6 @@ export class PocketGateway {
   }
 
   async #handlePair(req: IncomingMessage, res: ServerResponse): Promise<void> {
-    if (!this.#originAllowed(req)) {
-      sendText(res, 403, 'forbidden')
-      return
-    }
     const ip = clientIp(req)
     if (!this.#limiter.take(`pair:${ip}`)) {
       const body: PairError = { error: 'rate-limited', message: 'Too many attempts. Wait a minute and try again.' }
@@ -474,12 +492,21 @@ export class PocketGateway {
       return
     }
 
+    // The page is public and may be opened from a camera/external app, which
+    // Chrome can mark `sec-fetch-site: cross-site`. Only the state-changing POST
+    // needs the same-origin fence.
+    if (!this.#originAllowed(req)) {
+      sendText(res, 403, 'forbidden')
+      return
+    }
+
     const body = await readJson(req, MAX_PAIR_BODY_BYTES)
     if (body === undefined || typeof body !== 'object' || body === null) {
       sendJson(res, 400, { error: 'bad-request', message: 'Send a JSON body with a code.' } satisfies PairError)
       return
     }
-    const result = this.#codes.verify((body as { code?: unknown }).code, ip)
+    const payload = body as { code?: unknown; model?: unknown }
+    const result = this.#codes.verify(payload.code, ip)
     if (!result.ok) {
       if (result.reason === 'locked') {
         sendJson(res, 429, {
@@ -497,6 +524,12 @@ export class PocketGateway {
     }
 
     const issued = this.#cookies.issue()
+    this.#devices.register({
+      id: issued.sid,
+      userAgent: headerValue(req.headers['user-agent']),
+      address: clientIp(req),
+      ...(typeof payload.model === 'string' ? { model: payload.model } : {}),
+    })
     res.writeHead(204, {
       'set-cookie': this.#cookies.cookieHeader(issued.value, issued.expiresAt, this.#protocol === 'https:'),
       'cache-control': 'no-store',
@@ -554,7 +587,12 @@ export class PocketGateway {
   #cookieSession(req: IncomingMessage): string | undefined {
     const cookie = parseCookieHeader(req.headers.cookie)[GATEWAY_COOKIE]
     const payload = this.#cookies.verify(cookie)
-    return payload?.sid
+    if (payload === undefined) return undefined
+    const paired = this.#devices.touch(payload.sid, {
+      userAgent: headerValue(req.headers['user-agent']),
+      address: clientIp(req),
+    })
+    return paired ? payload.sid : undefined
   }
 
   #originAllowed(req: IncomingMessage): boolean {

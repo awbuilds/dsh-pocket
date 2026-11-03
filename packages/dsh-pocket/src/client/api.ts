@@ -2,7 +2,7 @@
  * Typed calls to the loopback-only control routes the desktop dialog uses.
  * Every request is same-origin and carries the app's own session cookie.
  */
-import type { PocketInfo, RevokeResult } from '../shared/types.ts'
+import type { PocketInfo, RevokeDeviceResult, RevokeResult } from '../shared/types.ts'
 
 /** Failure carrying the HTTP status so the dialog can say what to do next. */
 export class PocketApiError extends Error {
@@ -46,4 +46,10 @@ export const pocketApi = {
   info: (): Promise<PocketInfo> => request<PocketInfo>('/pocket/info'),
   refresh: (): Promise<PocketInfo> => request<PocketInfo>('/pocket/refresh', { method: 'POST' }),
   revoke: (): Promise<RevokeResult> => request<RevokeResult>('/pocket/revoke', { method: 'POST' }),
+  revokeDevice: (id: string): Promise<RevokeDeviceResult> =>
+    request<RevokeDeviceResult>('/pocket/devices/revoke', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ id }),
+    }),
 }

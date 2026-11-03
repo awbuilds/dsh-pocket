@@ -61,6 +61,14 @@ token exchange once. This covers a new random upstream port, a restarted
 desktop host, and an expired DSH cookie. A request that already carries a token
 is passed through, which prevents a redirect loop.
 
+## Reconnects
+
+The phone may hold only the gateway cookie when a page is reopened. The gateway
+mints a fresh DSH launch token for each upstream login exchange (a consumed
+token caused a redirect loop), and the proxy rewrites DSH's `SameSite=Strict`
+auth cookie to `Lax` so a home-screen PWA launch can send it on the top-level
+navigation. Last-seen touches never rename an existing device.
+
 ## Mobile layout
 
 The DSH frame has no mobile breakpoint. The client plugin marks the document

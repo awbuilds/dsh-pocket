@@ -62,16 +62,27 @@ export function renderPairPage(): string {
     const raw = (location.hash || '').replace(/^#/, '').trim();
     return /^\\d{6}$/.test(raw) ? raw : '';
   }
+  async function deviceModel() {
+    try {
+      const data = navigator.userAgentData;
+      if (data && typeof data.getHighEntropyValues === 'function') {
+        const values = await data.getHighEntropyValues(['model']);
+        if (values && typeof values.model === 'string') return values.model;
+      }
+    } catch {}
+    return '';
+  }
   async function pair(code) {
     if (busy) return;
     busy = true;
     button.disabled = true;
     show('');
+    const model = await deviceModel();
     try {
       const response = await fetch('/pair', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ code }),
+        body: JSON.stringify({ code, model }),
         credentials: 'same-origin',
         cache: 'no-store'
       });

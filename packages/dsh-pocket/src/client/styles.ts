@@ -350,6 +350,87 @@ html[data-pocket-mobile] [data-pocket-frame] select {
   opacity: .55;
   cursor: default;
 }
+.pocket-devices {
+  margin: 16px 0 0;
+  border: .5px solid var(--dsw-alias-border-l3, #e3e6ea);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.pocket-devices__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 11px;
+  background: var(--dsw-alias-bg-base, #f6f7f9);
+  color: var(--dsw-alias-label-secondary, #5c6673);
+  font-size: 12px;
+  font-weight: 600;
+}
+.pocket-devices__count {
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--dsw-alias-interactive-bg-hover, rgb(0 0 0 / .06));
+  font-size: 11px;
+  text-align: center;
+}
+.pocket-devices__empty {
+  padding: 11px;
+  color: var(--dsw-alias-label-secondary, #5c6673);
+  font-size: 12px;
+}
+.pocket-devices__list {
+  max-height: 190px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+.pocket-device {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  border-top: .5px solid var(--dsw-alias-border-l3, #e3e6ea);
+}
+.pocket-device__body {
+  min-width: 0;
+  flex: 1;
+}
+.pocket-device__label {
+  overflow: hidden;
+  color: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pocket-device__meta {
+  margin-top: 2px;
+  color: var(--dsw-alias-label-secondary, #5c6673);
+  font-size: 11px;
+}
+.pocket-device__remove {
+  flex: none;
+  min-height: 30px;
+  padding: 5px 9px;
+  border: .5px solid var(--dsw-alias-border-l3, #e3e6ea);
+  border-radius: 8px;
+  background: transparent;
+  color: #c0392b;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pocket-device__remove:hover {
+  background: color-mix(in srgb, #c0392b 8%, transparent);
+}
+.pocket-device__remove:disabled {
+  opacity: .55;
+  cursor: default;
+}
 .pocket-note {
   margin: 16px 0 0;
   padding-top: 14px;

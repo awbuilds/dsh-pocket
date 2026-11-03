@@ -7,9 +7,19 @@ mobile navigation bar, a session sheet, and the desktop sidebar as a drawer.
 
 ![Mobile drawer](docs/assets/mobile-drawer.png)
 
+A physical **Moto G40 Fusion** (Android 12, Chrome 156) running the mobile
+surface, and the desktop dialog listing it:
+
+![Paired Moto G40 Fusion running DSH Pocket](docs/assets/moto-g40.png)
+
+![Link phone dialog listing the connected Moto](docs/assets/desktop-devices.png)
+
 ## What it gives you
 
 - **QR pairing** from the desktop sidebar: scan once, stay paired for 30 days.
+- **Paired devices at a glance**: the Link phone dialog lists every connected
+  phone/tablet by model and browser, with last-seen time and a per-device
+  **Remove** action.
 - **The real app**, not a reimplementation: chat, streaming tool calls,
   approvals, questions, files, and sessions all behave as on the Mac.
 - **A phone layout**: the 56px rail is replaced by a bottom bar, sessions open
@@ -20,7 +30,8 @@ mobile navigation bar, a session sheet, and the desktop sidebar as a drawer.
   survives desktop restarts.
 - **Contained failure**: a busy port, missing TLS file, or unreachable upstream
   never stops the desktop app; the pairing dialog reports the problem.
-- **Revocation**: one button invalidates every paired device immediately.
+- **Revocation**: remove one device without touching the others, or revoke all
+  devices with one button.
 
 ## Quick start
 
@@ -28,8 +39,8 @@ mobile navigation bar, a session sheet, and the desktop sidebar as a drawer.
 from one of:
 
 - the local package directory: `packages/dsh-pocket`
-- the release tarball: `awbuilds-dsh-pocket-0.0.2.tgz`
-- the npm package (once published): `@awbuilds/dsh-pocket@0.0.2`
+- the release tarball: `awbuilds-dsh-pocket-0.0.3.tgz`
+- the npm package (once published): `@awbuilds/dsh-pocket@0.0.3`
 
 Enable the **`@awbuilds/dsh-pocket`** bundle. If **Link phone** does not appear
 at the bottom of the sidebar, restart the app once.
@@ -89,13 +100,16 @@ version. See [docs/install.md](docs/install.md#update-after-a-dsh-upgrade).
 
 ## Status
 
-- Automated: 52 unit/integration/component tests, typecheck, host + client builds.
+- Automated: 64 unit/integration/component tests, typecheck, host + client builds.
 - Verified against a real 0.2.1-rc.5 host: pairing, proxying, boot graph, plugin
   bundle, WebSocket mux, mobile bar, session sheet, drawer, desktop dialog, and
   revocation.
+- Verified on a physical **Moto G40 Fusion** (Android 12, Chrome 156): QR
+  pairing, app load, bottom bar, device list in the desktop dialog, and reopening
+  after a host restart.
 - Pending: the real-device checklist in
-  [docs/mobile-checklist.md](docs/mobile-checklist.md) on iOS Safari and Android
-  Chrome (keyboard behavior, safe areas, background reconnect).
+  [docs/mobile-checklist.md](docs/mobile-checklist.md) on iOS Safari and other
+  Android browsers (keyboard behavior, safe areas, background reconnect).
 
 ## License
 

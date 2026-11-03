@@ -17,6 +17,24 @@ export interface PairingSnapshot {
   ttlSeconds: number
 }
 
+/** One phone or tablet paired with the gateway. */
+export interface PocketDevice {
+  /** Opaque session id inside the signed device cookie. */
+  id: string
+  /** Friendly label derived from the User-Agent, e.g. `moto g40 fusion · Chrome`. */
+  label: string
+  /** Full User-Agent retained for diagnostics. */
+  userAgent?: string
+  /** Android model hint, when the browser exposes one. */
+  model?: string
+  /** Last observed peer address. */
+  address?: string
+  /** Unix milliseconds when the device paired. */
+  createdAt: number
+  /** Unix milliseconds of the most recent authenticated request. */
+  lastSeenAt: number
+}
+
 /** Response body of `GET /pocket/info` (loopback only). */
 export interface PocketInfo {
   status: PocketStatus
@@ -38,11 +56,18 @@ export interface PocketInfo {
   error?: string
   /** Package version, for support diagnostics. */
   version: string
+  /** Currently paired phones/tablets, most recently active first. */
+  devices: PocketDevice[]
 }
 
 /** Response body of `POST /pocket/revoke`. */
 export interface RevokeResult {
   revokedAt: number
+}
+
+/** Response body of `POST /pocket/devices/revoke`. */
+export interface RevokeDeviceResult {
+  removed: boolean
 }
 
 /** Error body used by the pairing endpoints. */

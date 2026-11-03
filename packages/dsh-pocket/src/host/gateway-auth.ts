@@ -228,7 +228,7 @@ export class SessionCookies {
   }
 
   /** Issue one cookie value and its absolute expiry. */
-  issue(): { value: string; expiresAt: number } {
+  issue(): { value: string; expiresAt: number; sid: string } {
     const issuedAt = this.#now()
     const expiresAt = issuedAt + this.#maxAgeDays * 24 * 60 * 60 * 1000
     const payload: CookiePayload = {
@@ -238,7 +238,7 @@ export class SessionCookies {
       sid: encodeBase64Url(randomBytes(16)),
     }
     const body = encodeBase64Url(Buffer.from(JSON.stringify(payload), 'utf8'))
-    return { value: `v1.${body}.${this.#signature(body)}`, expiresAt }
+    return { value: `v1.${body}.${this.#signature(body)}`, expiresAt, sid: payload.sid }
   }
 
   /** Verify one cookie value, returning its payload only while unexpired and untampered. */

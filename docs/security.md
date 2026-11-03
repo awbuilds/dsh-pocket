@@ -55,6 +55,11 @@ otherwise in `$DSH_HOME/pocket/gateway-session` with mode `0600`.
   pairing page additionally uses `DENY`.
 - **No secrets in logs:** the launcher token, cookies, and pairing codes are
   never logged. `/healthz` returns only listener state.
+- **Home-screen launches:** DSH's own browser cookie is `SameSite=Strict`, which
+  a phone launching the PWA from its home screen (a cross-site top-level
+  navigation) would not send, causing a login redirect loop. The proxy rewrites
+  that upstream cookie to `SameSite=Lax`; the gateway's own Origin/Sec-Fetch
+  fence still protects state-changing requests.
 
 ## Plain HTTP (v1 default)
 
@@ -80,16 +85,24 @@ TLS is active the gateway cookie gains `Secure`. The upstream DSH listener stays
 HTTP on loopback; its cookie is therefore not marked `Secure` even though the
 browser receives it over the gateway's TLS connection.
 
-## Revocation and lifetime
+## Connected devices and revocation
 
-- **Revoke devices** in the dialog rotates the gateway secret immediately; every
-  paired cookie becomes invalid and devices are sent back to `/pair`.
-- A paired cookie lasts 30 days (`cookieMaxAgeDays`).
+- The gateway keeps a small allowlist of paired sessions at
+  `$DSH_HOME/pocket/devices.json` (mode `0600`, atomic writes). It stores an
+  opaque sid, the label derived from the User-Agent and Android model hint, the
+  last peer address, and first/last-seen timestamps. It is never served through
+  the LAN; the dialog reads it over the loopback control route.
+- **Remove** one device in the dialog and that sid is dropped from the
+  allowlist; its existing cookie immediately stops authenticating, while other
+  phones stay paired. This is still a stateless-cookie design with an allowlist,
+  not a server-side session store.
+- **Revoke devices** rotates the gateway secret and clears the allowlist, so
+  every paired cookie becomes invalid at once.
+- A paired cookie lasts 30 days (`cookieMaxAgeDays`). Last-seen writes are
+  coalesced; the file contains no upstream DSH cookie.
 - The DSH browser cookie can outlive a gateway revocation, but it is unreachable
   once the gateway cookie is gone. To revoke those too, delete the
   `client-connection/browser-session` credential and restart DSH.
-- There is no per-device list (cookies are stateless), so revocation is
-  all-devices by design.
 
 ## Network scope
 

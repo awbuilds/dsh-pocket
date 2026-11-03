@@ -14,8 +14,9 @@ import type { Context } from '@deepseek-ai/cordis'
 import z from '@deepseek-ai/schemastery'
 import type {} from '@deepseek-ai/dsh-client-connection'
 import type {} from '@deepseek-ai/dsh-host-webserver'
-import type { PocketInfo, RevokeResult } from '../shared/types.ts'
+import type { PocketInfo, RevokeDeviceResult, RevokeResult } from '../shared/types.ts'
 import { isLoopbackAddress, isLoopbackHost } from './addresses.ts'
+import { DeviceRegistry } from './devices.ts'
 import { PocketGateway, type GatewayLogger } from './gateway.ts'
 import { resolveDshHome, SecretStore, type CredentialsLike, type SecretLogger } from './secret.ts'
 import { transformIndex } from './pwa.ts'
@@ -26,7 +27,7 @@ export const name = 'dsh-pocket'
 /** Services that must exist before the gateway can mint upstream URLs. */
 export const inject = ['webServer', 'connection']
 
-const VERSION = '0.0.2'
+const VERSION = '0.0.3'
 
 /** Plugin configuration, validated by the Loader before `apply`. */
 export interface PocketConfig {
@@ -72,16 +73,20 @@ function resolveUpstreamOrigin(ctx: Context): string {
   return `${server.protocol ?? 'http:'}//127.0.0.1:${String(server.port)}`
 }
 
-function resolveLaunchToken(ctx: Context, cache: { origin: string; token: string } | undefined): {
-  token: string
-  cache: { origin: string; token: string }
-} {
+/**
+ * Mint a fresh upstream launch token.
+ *
+ * Do not cache this: the DSH web server consumes a launch token when it sets
+ * the browser session cookie. Reusing a consumed token made a reopened phone
+ * bounce between `/` and `/?token=…` (ERR_TOO_MANY_REDIRECTS) after its
+ * session cookie was gone.
+ */
+function resolveLaunchToken(ctx: Context): string {
   const origin = resolveUpstreamOrigin(ctx)
-  if (cache !== undefined && cache.origin === origin) return { token: cache.token, cache }
   const authenticated = ctx.connection.authenticatedUrl(origin.endsWith('/') ? origin : `${origin}/`)
   const token = new URL(authenticated).searchParams.get('token')
   if (token === null || token === '') throw new Error('dsh-pocket: the connection service did not mint a launch token')
-  return { token, cache: { origin, token } }
+  return token
 }
 
 function sendJson(res: ServerResponse, status: number, body: unknown): void {
@@ -118,6 +123,40 @@ async function loadTls(config: PocketConfig): Promise<{ cert: string; key: strin
   }
 }
 
+function readJsonBody(req: IncomingMessage, limit: number): Promise<unknown> {
+  return new Promise((resolve) => {
+    let size = 0
+    const chunks: Buffer[] = []
+    let done = false
+    const finish = (value: unknown): void => {
+      if (done) return
+      done = true
+      resolve(value)
+    }
+    req.on('data', (chunk: Buffer) => {
+      size += chunk.byteLength
+      if (size > limit) {
+        req.destroy()
+        finish(undefined)
+        return
+      }
+      chunks.push(chunk)
+    })
+    req.on('end', () => {
+      if (chunks.length === 0) {
+        finish(undefined)
+        return
+      }
+      try {
+        finish(JSON.parse(Buffer.concat(chunks).toString('utf8')))
+      } catch {
+        finish(undefined)
+      }
+    })
+    req.on('error', () => finish(undefined))
+  })
+}
+
 function fallbackInfo(
   status: PocketInfo['status'],
   ctx: Context,
@@ -140,6 +179,7 @@ function fallbackInfo(
     tls: false,
     error,
     version: VERSION,
+    devices: [],
   }
 }
 
@@ -152,7 +192,6 @@ export async function apply(ctx: Context, config: PocketConfig): Promise<void> {
   const logger = (ctx as unknown as { logger?: (name: string) => GatewayLogger }).logger?.('dsh-pocket') ?? console
   const log = logger as unknown as GatewayLogger & SecretLogger
   const state: PluginState = {}
-  let tokenCache: { origin: string; token: string } | undefined
 
   const describe = (): PocketInfo => {
     if (state.gateway !== undefined) {
@@ -227,6 +266,29 @@ export async function apply(ctx: Context, config: PocketConfig): Promise<void> {
     }
   }
 
+  const onRevokeDevice = async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
+    if (guard(req, res)) return
+    if (req.method !== 'POST') {
+      sendText(res, 405, 'method not allowed')
+      return
+    }
+    if (state.gateway === undefined) {
+      sendText(res, 409, 'remote access is not running')
+      return
+    }
+    const body = await readJsonBody(req, 1024)
+    const id =
+      typeof body === 'object' && body !== null && typeof (body as { id?: unknown }).id === 'string'
+        ? (body as { id: string }).id
+        : undefined
+    if (id === undefined || id === '') {
+      sendText(res, 400, 'send a JSON body with a device id')
+      return
+    }
+    const result: RevokeDeviceResult = { removed: state.gateway.revokeDevice(id) }
+    sendJson(res, 200, result)
+  }
+
   const disposers: Array<() => void> = []
   disposers.push(ctx.webServer.register({ kind: 'exact', path: '/pocket/info', handler: onInfo }))
   disposers.push(ctx.webServer.register({ kind: 'exact', path: '/pocket/refresh', handler: onRefresh }))
@@ -236,6 +298,15 @@ export async function apply(ctx: Context, config: PocketConfig): Promise<void> {
       path: '/pocket/revoke',
       handler: (req, res) => {
         void onRevoke(req, res)
+      },
+    }),
+  )
+  disposers.push(
+    ctx.webServer.register({
+      kind: 'exact',
+      path: '/pocket/devices/revoke',
+      handler: (req, res) => {
+        void onRevokeDevice(req, res)
       },
     }),
   )
@@ -290,13 +361,10 @@ export async function apply(ctx: Context, config: PocketConfig): Promise<void> {
     return
   }
 
+  const devices = new DeviceRegistry(resolveDshHome(), log)
   const gateway = new PocketGateway({
     upstreamOrigin: () => resolveUpstreamOrigin(ctx),
-    launchToken: () => {
-      const resolved = resolveLaunchToken(ctx, tokenCache)
-      tokenCache = resolved.cache
-      return resolved.token
-    },
+    launchToken: () => resolveLaunchToken(ctx),
     bindHost: config.bindHost,
     port: Number(config.port),
     portAttempts: Number(config.portAttempts),
@@ -311,6 +379,7 @@ export async function apply(ctx: Context, config: PocketConfig): Promise<void> {
     extraOrigins: config.publicOrigins,
     secret,
     rotateSecret: async () => await store.rotate(),
+    devices,
     version: VERSION,
     logger: log,
   })

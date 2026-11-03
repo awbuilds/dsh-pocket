@@ -1,3 +1,6 @@
+import { mkdtemp, rm } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { createServer, type Server } from 'node:http'
 import { request as httpsRequest } from 'node:https'
 import type { AddressInfo } from 'node:net'
@@ -5,6 +8,7 @@ import { once } from 'node:events'
 import { afterEach, describe, expect, it } from 'vitest'
 import selfsigned from 'selfsigned'
 import { WebSocket, WebSocketServer } from 'ws'
+import { DeviceRegistry } from '../src/host/devices.ts'
 import { PocketGateway } from '../src/host/gateway.ts'
 import { GATEWAY_COOKIE, createSecret, upstreamCookieName } from '../src/host/gateway-auth.ts'
 
@@ -109,6 +113,7 @@ interface GatewayFixture {
 
 async function startGateway(overrides: Partial<ConstructorParameters<typeof PocketGateway>[0]> = {}): Promise<GatewayFixture> {
   const upstream = await startUpstream()
+  const home = await mkdtemp(join(tmpdir(), 'dsh-pocket-gateway-'))
   const gateway = new PocketGateway({
     upstreamOrigin: () => upstream.origin,
     launchToken: () => 'process-token',
@@ -119,6 +124,7 @@ async function startGateway(overrides: Partial<ConstructorParameters<typeof Pock
     pairing: { ttlSeconds: 300, maxAttempts: 10, windowSeconds: 300, lockoutSeconds: 900 },
     secret: createSecret(),
     rotateSecret: async () => createSecret(),
+    devices: new DeviceRegistry(home),
     version: 'test',
     ...overrides,
   })
@@ -129,6 +135,7 @@ async function startGateway(overrides: Partial<ConstructorParameters<typeof Pock
     async close() {
       await gateway.close()
       await upstream.close()
+      await rm(home, { recursive: true, force: true })
     },
   }
 }
@@ -136,7 +143,11 @@ async function startGateway(overrides: Partial<ConstructorParameters<typeof Pock
 async function pair(fixture: GatewayFixture): Promise<string> {
   const response = await fetch(`${fixture.base}/pair`, {
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
+    headers: {
+      'content-type': 'application/json',
+      'user-agent':
+        'Mozilla/5.0 (Linux; Android 10; moto g40 fusion) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36',
+    },
     body: JSON.stringify({ code: fixture.gateway.pairing.code }),
   })
   expect(response.status).toBe(204)
@@ -152,6 +163,17 @@ afterEach(async () => {
 })
 
 describe('PocketGateway request flow', () => {
+  it('serves the pairing page to an external-app navigation', async () => {
+    const fixture = await startGateway()
+    fixtures.push(fixture)
+    const response = await fetch(`${fixture.base}/pair`, {
+      headers: { 'sec-fetch-site': 'cross-site', accept: 'text/html' },
+      redirect: 'manual',
+    })
+    expect(response.status).toBe(200)
+    expect(await response.text()).toContain('Connect this device')
+  })
+
   it('serves the pairing page unauthenticated and the app only after a cookie', async () => {
     const fixture = await startGateway()
     fixtures.push(fixture)
@@ -210,6 +232,23 @@ describe('PocketGateway request flow', () => {
     expect(body.headers.origin).toBeUndefined()
     expect(body.headers['sec-fetch-site']).toBeUndefined()
     expect(body.headers['x-forwarded-for']).toBeUndefined()
+  })
+
+  it('relaxes the upstream auth cookie from Strict to Lax for PWA launches', async () => {
+    const fixture = await startGateway()
+    fixtures.push(fixture)
+    const cookie = await pair(fixture)
+    const headers = { accept: 'text/html', cookie: `${GATEWAY_COOKIE}=${cookie}` }
+    const first = await fetch(`${fixture.base}/`, { redirect: 'manual', headers })
+    expect(first.status).toBe(303)
+    const location = first.headers.get('location')
+    expect(location).toContain('/?token=')
+    const response = await fetch(`${fixture.base}${location ?? ''}`, { redirect: 'manual', headers })
+    expect(response.status).toBe(303)
+    const setCookie = response.headers.get('set-cookie') ?? ''
+    expect(setCookie).toContain(`${upstreamCookieName(fixture.gateway.info().upstreamOrigin)}=`)
+    expect(setCookie).toContain('SameSite=Lax')
+    expect(setCookie).not.toContain('SameSite=Strict')
   })
 
   it('rejects state-changing requests from another origin', async () => {
@@ -285,13 +324,55 @@ describe('PocketGateway request flow', () => {
     const fixture = await startGateway()
     fixtures.push(fixture)
     const cookie = await pair(fixture)
+    expect(fixture.gateway.info().devices).toHaveLength(1)
     await fixture.gateway.revoke()
+    expect(fixture.gateway.info().devices).toHaveLength(0)
     const response = await fetch(`${fixture.base}/`, {
       redirect: 'manual',
       headers: { accept: 'text/html', cookie: `${GATEWAY_COOKIE}=${cookie}` },
     })
     expect(response.status).toBe(303)
     expect(response.headers.get('location')).toBe('/pair')
+  })
+
+  it('lists a paired device and revokes just that device', async () => {
+    const fixture = await startGateway()
+    fixtures.push(fixture)
+    const cookie = await pair(fixture)
+    const [device] = fixture.gateway.info().devices
+    expect(device).toBeDefined()
+    expect(device?.label).toBe('moto g40 fusion · Chrome')
+    expect(device?.address).toBeTruthy()
+    expect(fixture.gateway.revokeDevice(device?.id ?? '')).toBe(true)
+    expect(fixture.gateway.info().devices).toHaveLength(0)
+    const denied = await fetch(`${fixture.base}/`, {
+      redirect: 'manual',
+      headers: { accept: 'text/html', cookie: `${GATEWAY_COOKIE}=${cookie}` },
+    })
+    expect(denied.status).toBe(303)
+    expect(denied.headers.get('location')).toBe('/pair')
+  })
+
+  it('uses the client model hint when Android freezes the UA', async () => {
+    const fixture = await startGateway()
+    fixtures.push(fixture)
+    const response = await fetch(`${fixture.base}/pair`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'user-agent':
+          'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Mobile Safari/537.36',
+      },
+      body: JSON.stringify({ code: fixture.gateway.pairing.code, model: 'moto g40 fusion' }),
+    })
+    expect(response.status).toBe(204)
+    const cookie = setCookieValue(response, GATEWAY_COOKIE)
+    expect(cookie).toBeDefined()
+    const app = await fetch(`${fixture.base}/api/echo`, {
+      headers: { cookie: `${GATEWAY_COOKIE}=${cookie}` },
+    })
+    expect(app.status).toBe(200)
+    expect(fixture.gateway.info().devices[0]?.label).toBe('moto g40 fusion · Chrome')
   })
 
   it('locks pairing after repeated wrong codes', async () => {
@@ -362,6 +443,7 @@ describe('PocketGateway listener lifecycle', () => {
       pairing: { ttlSeconds: 300, maxAttempts: 10, windowSeconds: 300, lockoutSeconds: 900 },
       secret: createSecret(),
       rotateSecret: async () => createSecret(),
+      devices: new DeviceRegistry(tmpdir()),
       version: 'test',
     })
     await expect(gateway.start()).rejects.toBeTruthy()

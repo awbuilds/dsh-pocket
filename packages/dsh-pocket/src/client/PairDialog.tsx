@@ -42,6 +42,15 @@ function formatCountdown(seconds: number): string {
   return `${String(minutes)}:${String(rest).padStart(2, '0')}`
 }
 
+/** Compact relative time for the paired-device list. */
+function formatLastSeen(at: number): string {
+  const seconds = Math.max(0, Math.round((Date.now() - at) / 1000))
+  if (seconds < 45) return 'active now'
+  if (seconds < 3600) return `${String(Math.round(seconds / 60))}m ago`
+  if (seconds < 86400) return `${String(Math.round(seconds / 3600))}h ago`
+  return new Date(at).toLocaleDateString()
+}
+
 /** The modal itself. */
 export function PairDialog({ onClose }: PairDialogProps): React.JSX.Element {
   const [info, setInfo] = useState<PocketInfo | undefined>(undefined)
@@ -174,6 +183,19 @@ export function PairDialog({ onClose }: PairDialogProps): React.JSX.Element {
     }
   }
 
+  const removeDevice = async (id: string): Promise<void> => {
+    setBusy(true)
+    setError(undefined)
+    try {
+      await pocketApi.revokeDevice(id)
+      await load(false)
+    } catch (failure) {
+      setError(describeError(failure))
+    } finally {
+      setBusy(false)
+    }
+  }
+
   const running = info?.status === 'running'
   const noAddress = info !== undefined && info.addresses.length === 0
 
@@ -269,6 +291,39 @@ export function PairDialog({ onClose }: PairDialogProps): React.JSX.Element {
             {pairUrl !== '' ? (
               <code className="pocket-url">{pairUrl}</code>
             ) : null}
+
+            <div className="pocket-devices">
+              <div className="pocket-devices__head">
+                <span>Connected devices</span>
+                <span className="pocket-devices__count">{info.devices.length}</span>
+              </div>
+              {info.devices.length === 0 ? (
+                <div className="pocket-devices__empty">No phones or tablets are paired yet.</div>
+              ) : (
+                <ul className="pocket-devices__list">
+                  {info.devices.map((device) => (
+                    <li className="pocket-device" key={device.id}>
+                      <div className="pocket-device__body">
+                        <div className="pocket-device__label">{device.label}</div>
+                        <div className="pocket-device__meta">
+                          {device.address === undefined ? '' : `${device.address} · `}
+                          {formatLastSeen(device.lastSeenAt)}
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        className="pocket-device__remove"
+                        aria-label={`Remove ${device.label}`}
+                        onClick={() => void removeDevice(device.id)}
+                        disabled={busy}
+                      >
+                        Remove
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
 
             <div className="pocket-actions">
               <button type="button" className="pocket-btn pocket-btn--primary" onClick={() => void copy()} disabled={pairUrl === ''}>

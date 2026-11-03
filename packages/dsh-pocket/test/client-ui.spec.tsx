@@ -110,6 +110,15 @@ const INFO: PocketInfo = {
   upstreamOrigin: 'http://127.0.0.1:50000',
   tls: false,
   version: 'test',
+  devices: [
+    {
+      id: 'sid-moto',
+      label: 'moto g40 fusion · Chrome',
+      address: '192.168.1.50',
+      createdAt: Date.now() - 60_000,
+      lastSeenAt: Date.now() - 5_000,
+    },
+  ],
 }
 
 function stubFetch(info: PocketInfo = INFO): ReturnType<typeof vi.fn> {
@@ -117,6 +126,12 @@ function stubFetch(info: PocketInfo = INFO): ReturnType<typeof vi.fn> {
     const path = String(input)
     if (path.endsWith('/pocket/revoke')) {
       return new Response(JSON.stringify({ revokedAt: Date.now() }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      })
+    }
+    if (path.endsWith('/pocket/devices/revoke')) {
+      return new Response(JSON.stringify({ removed: true }), {
         status: 200,
         headers: { 'content-type': 'application/json' },
       })
@@ -154,6 +169,22 @@ describe('PairDialog', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Revoke all' }))
     await waitFor(() => {
       expect(fetchMock.mock.calls.some(([input]) => String(input).endsWith('/pocket/revoke'))).toBe(true)
+    })
+  })
+
+  it('lists the paired device and removes it', async () => {
+    const fetchMock = stubFetch()
+    render(<PairDialog onClose={() => {}} />)
+    expect(await screen.findByText('moto g40 fusion · Chrome')).toBeTruthy()
+    expect(screen.getByText(/192\.168\.1\.50/)).toBeTruthy()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Remove moto g40 fusion · Chrome' }))
+    await waitFor(() => {
+      expect(
+        fetchMock.mock.calls.some(
+          ([input, init]) => String(input).endsWith('/pocket/devices/revoke') && String(init?.body).includes('sid-moto'),
+        ),
+      ).toBe(true)
     })
   })
 

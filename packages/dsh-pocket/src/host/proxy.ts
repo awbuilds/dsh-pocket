@@ -95,6 +95,20 @@ function isHtmlResponse(headers: Record<string, unknown>): boolean {
   return String(headers['content-type'] ?? '').includes('text/html')
 }
 
+/**
+ * The DSH auth cookie is `SameSite=Strict`. A phone opening the PWA from its
+ * home screen is a cross-site top-level navigation, so Strict cookies are not
+ * sent and the login exchange loops. The gateway is the only client here, and
+ * it enforces its own Origin/Sec-Fetch fence on state-changing requests, so the
+ * upstream auth cookie can safely be relaxed to Lax.
+ */
+function relaxSameSite(headers: Record<string, string | string[] | number | undefined>): void {
+  const cookies = headers['set-cookie']
+  if (cookies === undefined) return
+  const values = Array.isArray(cookies) ? cookies : [String(cookies)]
+  headers['set-cookie'] = values.map((cookie) => cookie.replace(/;\s*SameSite=Strict/giu, '; SameSite=Lax'))
+}
+
 /** Build the proxying layer. */
 export function createUpstreamProxy(options: UpstreamProxyOptions): UpstreamProxy {
   const proxy = proxyFactory()({
@@ -143,6 +157,7 @@ export function createUpstreamProxy(options: UpstreamProxyOptions): UpstreamProx
     }
     if (headers['x-content-type-options'] === undefined) headers['x-content-type-options'] = 'nosniff'
     if (isHtmlResponse(headers) && headers['x-frame-options'] === undefined) headers['x-frame-options'] = 'SAMEORIGIN'
+    relaxSameSite(headers)
     res.writeHead(status, headers)
     proxyRes.pipe(res)
     proxyRes.on('error', () => res.destroy())

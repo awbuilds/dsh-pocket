@@ -84,7 +84,7 @@ backdrop, zero console errors. iOS Safari / Android Chrome checklist pending.
 - [x] Error surfaces in the dialog; 502 page; secret-free logs.
 - [x] Port-conflict fallback and all-ports-busy containment.
 - [x] Restart/expiry self-heal via the upstream token exchange.
-- [x] 52 tests across auth, addresses, secrets, PWA, profile edits, gateway
+- [x] 64 tests across auth, addresses, secrets, devices, PWA, profile edits, gateway
       request flow/listener lifecycle, host plugin, and client components.
 - [x] Install, security, architecture, troubleshooting, mobile checklist docs.
 
