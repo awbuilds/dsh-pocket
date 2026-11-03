@@ -1,18 +1,11 @@
 # DSH Pocket
 
+**[Website](https://awbuilds.github.io/dsh-pocket/)** · [npm](https://www.npmjs.com/package/@awbuilds/dsh-pocket) · [Install guide](docs/install.md)
+
 Control the **running DeepSeek Harness Desktop app** from your phone on the same
 network. A small, additive plugin starts a pairing-authenticated gateway in front
 of the app's loopback web server; the phone loads the real DSH web UI, with a
 mobile navigation bar, a session sheet, and the desktop sidebar as a drawer.
-
-![Mobile drawer](docs/assets/mobile-drawer.png)
-
-A physical **Moto G40 Fusion** (Android 12, Chrome 156) running the mobile
-surface, and the desktop dialog listing it:
-
-![Paired Moto G40 Fusion running DSH Pocket](docs/assets/moto-g40.png)
-
-![Link phone dialog listing the connected Moto](docs/assets/desktop-devices.png)
 
 ## What it gives you
 

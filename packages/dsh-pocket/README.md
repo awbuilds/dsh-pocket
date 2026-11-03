@@ -1,6 +1,6 @@
 # DSH Pocket
 
-npm package: [`@awbuilds/dsh-pocket`](https://www.npmjs.com/package/@awbuilds/dsh-pocket)
+npm package: [`@awbuilds/dsh-pocket`](https://www.npmjs.com/package/@awbuilds/dsh-pocket) · [Website](https://awbuilds.github.io/dsh-pocket/)
 
 LAN mobile access for **DeepSeek Harness Desktop**. A pairing-authenticated
 gateway sits in front of the running app's loopback web server, and a small
