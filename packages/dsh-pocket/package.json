@@ -1,7 +1,7 @@
 {
-  "name": "dsh-pocket",
-  "version": "0.0.1",
-  "description": "LAN mobile access for DeepSeek Harness: a pairing-authenticated gateway plus a mobile PWA surface for the running Desktop host.",
+  "name": "@awbuilds/dsh-pocket",
+  "version": "0.0.2",
+  "description": "LAN mobile access for DeepSeek Harness Desktop: a pairing-authenticated gateway and a mobile PWA surface.",
   "type": "module",
   "license": "MIT",
   "main": "lib/index.js",
@@ -62,5 +62,17 @@
     "qrcode-generator": "^1.4.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
+  },
+  "author": "Abhijith Warrier",
+  "homepage": "https://github.com/awbuilds/dsh-pocket#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/awbuilds/dsh-pocket.git"
+  },
+  "bugs": {
+    "url": "https://github.com/awbuilds/dsh-pocket/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

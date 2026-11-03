@@ -77,12 +77,19 @@ Every mobile rule is scoped to `html[data-pocket-mobile]`, which is applied only
 below 900px. If the Desktop window is narrower than that, the phone layout
 appears by design. Widen the window to restore it.
 
-## Install fails with a pnpm error
+## `dsh plugin --profile desktop` says the profile is managed exclusively
 
-The app must be completely quit. If the matching CLI cannot run, install from
-**Settings → Plugins** and run
-`node scripts/install-desktop.mjs --skip-install`. The script's diagnostic keeps
-the exact pnpm output.
+This is expected: DSH 0.2.1 reserves the Desktop profile for the Electron app.
+Do not use the CLI for it. Install from **Plugins** in the left sidebar in the running app
+(local path, release tarball, or npm package name). If the Plugins page rejects a
+local path, quit the app and run `node scripts/install-desktop.mjs --manual`.
+
+## The app's Plugins page rejects the local package
+
+Use the generated tarball instead: run `cd packages/dsh-pocket && npm pack` and
+select `awbuilds-dsh-pocket-0.0.2.tgz` in the Plugins page. Keep the tarball where
+it is; the profile references that path. The npm package is an alternative once
+published.
 
 ## Version mismatch after a DSH update
 

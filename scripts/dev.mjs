@@ -19,7 +19,7 @@ import { DSH_VERSION, enableBundle, profileDir, readProfileManifest } from './pr
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)))
 const PACKAGE_DIR = join(ROOT, 'packages', 'dsh-pocket')
-const PACKAGE_NAME = 'dsh-pocket'
+const PACKAGE_NAME = '@awbuilds/dsh-pocket'
 const PROFILE = 'pocket-dev'
 const HOME = process.env.DSH_HOME ?? process.env.DSH_POCKET_DEV_HOME ?? join(homedir(), '.dsh-pocket-dev')
 const CLI = ['--yes', `@deepseek-ai/dsh@${DSH_VERSION}`]

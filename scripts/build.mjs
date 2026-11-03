@@ -20,7 +20,7 @@ const CLIENT_EXTERNALS = [
   '@deepseek-ai/dsh-client-ui-dockkit',
 ]
 
-const MODULE_ID = 'dsh-pocket'
+const MODULE_ID = '@awbuilds/dsh-pocket'
 
 function indent(text, prefix = '\t\t') {
   return text

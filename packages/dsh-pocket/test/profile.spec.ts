@@ -25,28 +25,28 @@ describe('profile bundle selection', () => {
     const home = await mkdtemp(join(tmpdir(), 'dsh-pocket-profile-'))
     await profile(home, 'desktop', ['@deepseek-ai/dsh-base', '@deepseek-ai/dsh-web-app'])
 
-    const first = await enableBundle('desktop', 'dsh-pocket', home)
+    const first = await enableBundle('desktop', '@awbuilds/dsh-pocket', home)
     expect(first.changed).toBe(true)
-    expect(await isBundleEnabled('desktop', 'dsh-pocket', home)).toBe(true)
+    expect(await isBundleEnabled('desktop', '@awbuilds/dsh-pocket', home)).toBe(true)
     const manifest = await readProfileManifest('desktop', home)
     expect(manifest.dsh?.profile?.bundles).toEqual([
       '@deepseek-ai/dsh-base',
       '@deepseek-ai/dsh-web-app',
-      'dsh-pocket',
+      '@awbuilds/dsh-pocket',
     ])
     const files = await readdir(profileDir('desktop', home))
     expect(files.some((name) => name.startsWith('package.json.pocket-backup-'))).toBe(true)
 
-    const second = await enableBundle('desktop', 'dsh-pocket', home)
+    const second = await enableBundle('desktop', '@awbuilds/dsh-pocket', home)
     expect(second.changed).toBe(false)
   })
 
   it('removes the bundle and preserves the rest of the manifest', async () => {
     const home = await mkdtemp(join(tmpdir(), 'dsh-pocket-profile-'))
-    await profile(home, 'web', ['@deepseek-ai/dsh-base', 'dsh-pocket', '@deepseek-ai/dsh-web-app'])
-    const result = await disableBundle('web', 'dsh-pocket', home)
+    await profile(home, 'web', ['@deepseek-ai/dsh-base', '@awbuilds/dsh-pocket', '@deepseek-ai/dsh-web-app'])
+    const result = await disableBundle('web', '@awbuilds/dsh-pocket', home)
     expect(result.changed).toBe(true)
-    expect(await isBundleEnabled('web', 'dsh-pocket', home)).toBe(false)
+    expect(await isBundleEnabled('web', '@awbuilds/dsh-pocket', home)).toBe(false)
     const text = await readFile(join(profileDir('web', home), 'package.json'), 'utf8')
     expect(text).toContain('@deepseek-ai/dsh-base')
     expect(text).toContain('@deepseek-ai/dsh-web-app')

@@ -1,4 +1,6 @@
-# dsh-pocket
+# DSH Pocket
+
+npm package: [`@awbuilds/dsh-pocket`](https://www.npmjs.com/package/@awbuilds/dsh-pocket)
 
 LAN mobile access for **DeepSeek Harness Desktop**. A pairing-authenticated
 gateway sits in front of the running app's loopback web server, and a small
@@ -13,16 +15,19 @@ over your local network.
 
 ## Install (Desktop)
 
-```bash
-pnpm install
-pnpm build
-# Quit DeepSeek Harness completely, then:
-node scripts/install-desktop.mjs
-# Reopen DeepSeek Harness. Click the phone icon at the bottom of the sidebar.
-```
+The Desktop profile is managed by the app; DSH 0.2.1's CLI rejects
+`dsh plugin --profile desktop`. Install from inside the running app:
 
-The script installs this package into `~/.dsh/profiles/desktop` using the
-matching DSH CLI and enables its bundle. See [docs/install.md](../../docs/install.md).
+1. Open **Plugins** in the left sidebar.
+2. Install a bundle from a local path, the release tarball
+   (`awbuilds-dsh-pocket-0.0.2.tgz`), or the npm package
+   (`@awbuilds/dsh-pocket@0.0.2`, once published).
+3. Enable the **`@awbuilds/dsh-pocket`** bundle.
+4. If **Link phone** does not appear, restart DeepSeek Harness once.
+
+For a manifest-level fallback, quit the app and run
+`node scripts/install-desktop.mjs --manual` from a source checkout. See
+[docs/install.md](../../docs/install.md).
 
 ## Develop
 

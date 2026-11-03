@@ -24,15 +24,30 @@ mobile navigation bar, a session sheet, and the desktop sidebar as a drawer.
 
 ## Quick start
 
+**Inside DeepSeek Harness** — open **Plugins** in the left sidebar and install a bundle
+from one of:
+
+- the local package directory: `packages/dsh-pocket`
+- the release tarball: `awbuilds-dsh-pocket-0.0.2.tgz`
+- the npm package (once published): `@awbuilds/dsh-pocket@0.0.2`
+
+Enable the **`@awbuilds/dsh-pocket`** bundle. If **Link phone** does not appear
+at the bottom of the sidebar, restart the app once.
+
+DSH 0.2.1 reserves the Desktop profile for the app itself and rejects
+`dsh plugin --profile desktop` from a terminal. The app's Plugins page is the
+supported installer; a manifest-level fallback is
+`node scripts/install-desktop.mjs --manual` after quitting the app.
+
+**From source (development or a non-Desktop profile):**
+
 ```bash
 git clone https://github.com/awbuilds/dsh-pocket.git
 cd dsh-pocket
 pnpm install
 pnpm build
 pnpm test
-
-# Quit DeepSeek Harness completely, then:
-node scripts/install-desktop.mjs
+node scripts/dev.mjs
 ```
 
 Reopen the app, click **Link phone** at the bottom of the sidebar, and scan the
@@ -59,7 +74,7 @@ LAN-facing credential. A document navigation without the upstream cookie is
 bounced through the process launch token once; the same path heals an expired
 upstream session.
 
-The bundle is one profile row (`pocket`, package `dsh-pocket`) that supplies both
+The bundle is one profile row (`pocket`, package `@awbuilds/dsh-pocket`) that supplies both
 halves: the host entry starts the gateway and the browser entry adds the mobile
 surface through the app's own slot system (`shell.bottom`,
 `sidebar.footer.action`).

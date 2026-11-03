@@ -1,4 +1,4 @@
-# dsh-pocket bundle layer, applied after the Web/Desktop bundle layers.
+# @awbuilds/dsh-pocket bundle layer, applied after the Web/Desktop bundle layers.
 #
 # One row is enough: the package's Node entry starts the gateway, and its
 # browser entry (declared through package.json `dsh.client`) supplies the
@@ -6,7 +6,7 @@
 # here rebinds or replaces the DSH web server.
 - insert:
     - id: pocket
-      name: dsh-pocket
+      name: '@awbuilds/dsh-pocket'
       config:
         enabled: true
         # LAN listener. The gateway tries this port, then the next nine.

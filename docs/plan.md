@@ -29,7 +29,7 @@ global homebrew `dsh` is `0.2.0-rc.2`; scripts use
 - [x] Build assertions for the host exports and the client loader wrapper.
 
 **Verification:** host bundle imports under Node; client bundle registers with
-`window.__ModuleLoader__.load({ id: "dsh-pocket" })` and returns `apply`/`inject`.
+`window.__ModuleLoader__.load({ id: "@awbuilds/dsh-pocket" })` and returns `apply`/`inject`.
 
 ## Phase 1 — Gateway core (done)
 
@@ -48,7 +48,7 @@ global homebrew `dsh` is `0.2.0-rc.2`; scripts use
 - [x] `pwa.ts` + icons: manifest, apple-touch icon, viewport/meta transform.
 
 **Verification:** 40+ unit/integration tests; real 0.2.1-rc.5 host: pair,
-proxied app 200, boot graph contains `dsh-pocket`, plugin combo bundle 200,
+proxied app 200, boot graph contains `@awbuilds/dsh-pocket`, plugin combo bundle 200,
 WebSocket mux opens, revoke returns the device to `/pair`.
 
 ## Phase 2 — Desktop pairing UX (done)
