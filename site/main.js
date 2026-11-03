@@ -2,29 +2,10 @@ const header = document.getElementById('siteHeader')
 const toast = document.querySelector('.toast')
 
 const onScroll = () => {
-  header?.classList.toggle('is-scrolled', window.scrollY > 12)
+  header?.classList.toggle('is-scrolled', window.scrollY > 8)
 }
 onScroll()
 window.addEventListener('scroll', onScroll, { passive: true })
-
-const reveals = document.querySelectorAll('.reveal')
-const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-if (reduced || !('IntersectionObserver' in window)) {
-  reveals.forEach((node) => node.classList.add('is-in'))
-} else {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue
-        entry.target.classList.add('is-in')
-        observer.unobserve(entry.target)
-      }
-    },
-    { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
-  )
-  reveals.forEach((node) => observer.observe(node))
-}
 
 let toastTimer
 function showToast(message) {
@@ -32,7 +13,7 @@ function showToast(message) {
   toast.textContent = message
   toast.classList.add('is-visible')
   window.clearTimeout(toastTimer)
-  toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 1800)
+  toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 2000)
 }
 
 async function copyText(text) {
@@ -73,7 +54,7 @@ for (const button of document.querySelectorAll('[data-copy]')) {
     window.setTimeout(() => {
       button.classList.remove('is-copied')
       if (label) label.textContent = original
-    }, 1800)
+    }, 2000)
   })
 }
 
