@@ -3,26 +3,27 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>DSH Pocket — DeepSeek Harness on your phone</title>
+    <title>DSH Pocket — the full harness, not a phone app.</title>
     <meta
       name="description"
-      content="A pairing-secured LAN gateway that serves the real DeepSeek Harness Desktop UI to your phone. QR pairing, no cloud relay, MIT licensed."
+      content="A LAN plugin that serves the real DeepSeek Harness Desktop UI to a paired phone. Sessions, approvals, diffs, and the composer — the same client, at thumb scale."
     />
-    <meta name="theme-color" content="#f4f2ec" />
-    <meta property="og:title" content="DSH Pocket — DeepSeek Harness on your phone" />
+    <meta name="theme-color" content="#f2f0ea" />
+    <link rel="canonical" href="https://awbuilds.github.io/dsh-pocket/" />
+    <meta property="og:title" content="DSH Pocket — the full harness, not a phone app." />
     <meta
       property="og:description"
-      content="The real desktop workspace, served to your phone over your own network. Pair once with a QR code. Nothing leaves your LAN."
+      content="The real DeepSeek Harness UI on a paired phone, over your own network. No second app, no relay, no account."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://awbuilds.github.io/dsh-pocket/" />
+    <meta property="og:site_name" content="DSH Pocket" />
+    <meta property="og:image" content="https://awbuilds.github.io/dsh-pocket/assets/harness-phone-2x.png" />
+    <meta property="og:image:width" content="824" />
+    <meta property="og:image:height" content="1720" />
+    <meta property="og:image:alt" content="A DeepSeek Harness session running on a phone." />
+    <meta name="twitter:card" content="summary" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="./styles.css" />
     <script>
       document.documentElement.classList.replace('no-js', 'js')
@@ -32,247 +33,303 @@
     <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="site-header" id="siteHeader">
-      <nav class="nav shell" aria-label="Primary">
-        <a class="brand" href="#top" aria-label="DSH Pocket home">
-          <svg class="brand__mark" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-            <rect x="5.5" y="2.5" width="17" height="23" rx="5" stroke="currentColor" stroke-width="1.5" />
-            <path d="M10 15.5a4 4 0 0 1 8 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-            <circle cx="14" cy="19.6" r="1.35" fill="currentColor" />
-          </svg>
-          <span>DSH Pocket</span>
+      <div class="wrap header__inner">
+        <a class="wordmark" href="#top" aria-label="DSH Pocket, back to top">
+          <span class="wordmark__dot" aria-hidden="true"></span>
+          <span>DSH<span class="wordmark__slash">/</span>POCKET</span>
         </a>
 
-        <div class="nav__links">
-          <a href="#features">Overview</a>
-          <a href="#how">Architecture</a>
-          <a href="#security">Security</a>
-          <a href="#install">Install</a>
-        </div>
+        <nav class="nav" aria-label="Sections">
+          <a href="#surface"><span>01</span>Surface</a>
+          <a href="#architecture"><span>02</span>Architecture</a>
+          <a href="#security"><span>03</span>Security</a>
+          <a href="#install"><span>04</span>Install</a>
+        </nav>
 
-        <div class="nav__actions">
-          <a class="nav__text" href="https://github.com/awbuilds/dsh-pocket" target="_blank" rel="noopener">GitHub ↗</a>
-          <a class="button button--small" href="#install">Install</a>
+        <div class="header__actions">
+          <span class="version">v0.0.4</span>
+          <a class="source" href="https://github.com/awbuilds/dsh-pocket" target="_blank" rel="noopener">
+            GitHub <span aria-hidden="true">↗</span>
+          </a>
+          <a class="btn btn--small" href="#install">Install</a>
         </div>
-      </nav>
+      </div>
     </header>
 
     <main id="main">
       <section class="hero" id="top">
-        <div class="shell hero__grid">
-          <div class="hero__copy">
-            <p class="kicker">v0.0.4 · LAN remote for DeepSeek Harness</p>
+        <div class="hero__copy">
+          <div class="hero__copy-inner">
+            <p class="eyebrow">A LAN plugin for DeepSeek Harness Desktop</p>
 
-            <h1 class="display">DeepSeek Harness,<br />in your <em>pocket.</em></h1>
+            <h1>The full harness,<br />not a phone app.</h1>
 
             <p class="lede">
-              The real desktop workspace, served to your phone over your own network. Pair once with a QR code, then
-              run sessions, approve tool calls, and read diffs from anywhere in the house.
+              DSH Pocket serves the real DeepSeek Harness UI to a paired phone over your own network. Sessions,
+              approvals, diffs, and the composer — the same client, at thumb scale.
             </p>
 
             <div class="actions">
-              <a class="button" href="#install">Install from npm</a>
+              <a class="btn" href="#install">Install 0.0.4</a>
               <a class="text-link" href="https://github.com/awbuilds/dsh-pocket" target="_blank" rel="noopener">
                 Source &amp; docs <span aria-hidden="true">↗</span>
               </a>
             </div>
 
-            <p class="meta">macOS <span>/</span> DSH 0.2.1-rc.5 <span>/</span> MIT <span>/</span> no cloud relay</p>
+            <p class="meta">macOS <span>/</span> DSH 0.2.1-rc.5 <span>/</span> MIT <span>/</span> LAN only</p>
           </div>
+        </div>
 
-          <figure class="hero__media">
-            <div class="shot__label">
-              <span class="live-dot" aria-hidden="true"></span>
-              Live capture <span class="shot__dims">412 × 860 · Chrome 156</span>
+        <div class="hero__ink">
+          <figure class="capture">
+            <div class="capture__bar">
+              <span class="capture__live"><span class="dot" aria-hidden="true"></span>Live capture</span>
+              <span class="capture__dims">412 × 860 · Chrome 156</span>
             </div>
-            <div class="shot">
-              <img
-                class="shot__img"
-                src="./assets/harness-phone-2x.png"
-                width="824"
-                height="1720"
-                alt="DeepSeek Harness running on a phone: a session with streamed assistant output, a diff card, a to-do panel, the composer, and the Sessions, New, and More bar."
-                fetchpriority="high"
-              />
-            </div>
-            <figcaption class="shot__caption">
-              The running app, not a mockup. This session view is what a paired phone gets after scanning the code.
+            <img
+              class="capture__img"
+              src="./assets/harness-phone-2x.png"
+              width="824"
+              height="1720"
+              alt="A DeepSeek Harness session on a phone: streamed assistant output, a file-diff card, a to-do panel, the composer, and the Sessions, New, and More bar."
+              fetchpriority="high"
+            />
+            <figcaption class="capture__caption">
+              The running app, not a mockup. Pair once; the phone gets the same session view as the desktop.
             </figcaption>
           </figure>
         </div>
-
-        <div class="shell specs" aria-label="At a glance">
-          <div class="spec"><span>Gateway</span><b>0.0.0.0:7317</b></div>
-          <div class="spec"><span>Upstream</span><b>127.0.0.1 <i>loopback</i></b></div>
-          <div class="spec"><span>Pairing</span><b>6 digits · 30 days</b></div>
-          <div class="spec"><span>Distribution</span><b>npm · MIT</b></div>
-        </div>
       </section>
 
-      <section class="section" id="features">
-        <div class="shell">
-          <div class="section-head">
-            <p class="label">01 / The product</p>
-            <h2>The full workspace,<br />not a chat window.</h2>
-            <p class="section-head__copy">
-              DSH Pocket does not reimplement DeepSeek Harness. It serves the same UI, so the surfaces you already rely
-              on are there the moment the phone connects.
-            </p>
-          </div>
-
-          <div class="feature-grid">
-            <article class="feature">
-              <span class="feature__num">01</span>
-              <h3>Sessions &amp; streaming</h3>
-              <p>Open a running session and watch output arrive live. Tool calls, background jobs, and the trajectory view keep their state.</p>
-            </article>
-            <article class="feature">
-              <span class="feature__num">02</span>
-              <h3>Approvals &amp; questions</h3>
-              <p>Permission prompts and agent questions reach the phone, so a long task does not stall because you stepped away from the desk.</p>
-            </article>
-            <article class="feature">
-              <span class="feature__num">03</span>
-              <h3>Files &amp; diffs</h3>
-              <p>Read changed files and follow the work without switching screens. The same file tools, the same review cards.</p>
-            </article>
-            <article class="feature">
-              <span class="feature__num">04</span>
-              <h3>A phone layout</h3>
-              <p>The rail becomes a bottom bar. Sessions open in a sheet, the sidebar slides in as a drawer, and the composer respects the keyboard.</p>
-            </article>
-          </div>
-
-          <p class="footnote">
-            Paired phones appear in <strong>Link phone</strong> with model, browser, and last-seen time. Remove one device
-            or revoke every device at once.
-          </p>
+      <nav class="index" aria-label="On this page">
+        <div class="wrap index__grid">
+          <a class="index__item" href="#surface">
+            <span class="index__num">01</span>
+            <span class="index__title">Surface</span>
+            <span class="index__desc">Sessions, approvals, diffs</span>
+          </a>
+          <a class="index__item" href="#architecture">
+            <span class="index__num">02</span>
+            <span class="index__title">Architecture</span>
+            <span class="index__desc">One listener, one hop</span>
+          </a>
+          <a class="index__item" href="#security">
+            <span class="index__num">03</span>
+            <span class="index__title">Security</span>
+            <span class="index__desc">Local by construction</span>
+          </a>
+          <a class="index__item" href="#install">
+            <span class="index__num">04</span>
+            <span class="index__title">Install</span>
+            <span class="index__desc">From the Plugins page</span>
+          </a>
         </div>
-      </section>
+      </nav>
 
-      <section class="band" id="how">
-        <div class="shell band__grid">
-          <div class="band__copy">
-            <p class="label label--light">02 / Architecture</p>
-            <h2>One listener.<br />One hop.</h2>
-            <p>
-              The DSH web server never changes. The gateway binds the LAN address, authenticates the phone, and proxies
-              to the app's loopback port. That is the whole design.
-            </p>
-            <p class="band__facts"><span>Pairing cookie</span><span>Origin + Sec-Fetch fence</span><span>Stable LAN port</span></p>
+      <section class="section" id="surface">
+        <div class="wrap section__grid">
+          <div class="rail">
+            <span class="rail__num">01</span>
+            <span class="rail__label">Surface</span>
           </div>
 
-          <div class="band__diagram">
-            <div class="flow" role="img" aria-label="Your phone connects to the gateway at port 7317, which proxies to the DeepSeek Harness server on loopback">
-              <div class="flow__node">
-                <span>Phone</span>
-                <b>your browser</b>
-              </div>
-              <span class="flow__arrow" aria-hidden="true">→</span>
-              <div class="flow__node flow__node--key">
-                <span>Gateway</span>
-                <b>0.0.0.0:7317</b>
-              </div>
-              <span class="flow__arrow" aria-hidden="true">→</span>
-              <div class="flow__node">
-                <span>Desktop</span>
-                <b>127.0.0.1</b>
-              </div>
-            </div>
+          <div class="section__body">
+            <h2>The whole workspace,<br />at thumb scale.</h2>
+            <p class="section__intro">
+              DSH Pocket does not reimplement the harness. It serves the same client, so the session view, tool calls,
+              approval cards, and diffs are the ones you already use. Only the shape of the navigation changes.
+            </p>
 
-            <pre class="terminal"><code><span class="t-prompt">$</span> curl http://192.168.1.20:7317/healthz
-<span class="t-muted">{</span> <span class="t-key">"ok"</span>: <span class="t-val">true</span>, <span class="t-key">"state"</span>: <span class="t-str">"running"</span>,
-  <span class="t-key">"port"</span>: <span class="t-num">7317</span> <span class="t-muted">}</span></code></pre>
+            <ol class="rows">
+              <li class="row">
+                <span class="row__key">Sessions</span>
+                <div class="row__body">
+                  <h3>Live output, kept in place</h3>
+                  <p>Streaming assistant output, background jobs, and the trajectory view keep their state.</p>
+                </div>
+              </li>
+              <li class="row">
+                <span class="row__key">Approvals</span>
+                <div class="row__body">
+                  <h3>Prompts that can reach you</h3>
+                  <p>Permission prompts and agent questions arrive on the phone, so a long run does not stall.</p>
+                </div>
+              </li>
+              <li class="row">
+                <span class="row__key">Diffs</span>
+                <div class="row__body">
+                  <h3>The review cards, unchanged</h3>
+                  <p>Read changed files and follow the work without switching to a second screen or client.</p>
+                </div>
+              </li>
+              <li class="row">
+                <span class="row__key">Composer</span>
+                <div class="row__body">
+                  <h3>A phone layout that stays put</h3>
+                  <p>Safe areas and the on-screen keyboard are handled; the bottom bar does not move out from under you.</p>
+                </div>
+              </li>
+            </ol>
 
-            <p class="band__note">
-              If the port is taken, or the upstream is unreachable, the desktop app keeps running. The pairing dialog
-              reports what failed.
+            <p class="statement"><span class="statement__mark" aria-hidden="true"></span>No second app. No reimplementation. No sync layer.</p>
+
+            <p class="footnote">
+              Paired phones appear in <strong>Link phone</strong> with model, browser, and last-seen time. Remove one
+              device, or rotate the key for all.
             </p>
           </div>
         </div>
       </section>
 
-      <section class="section" id="security">
-        <div class="shell security__grid">
-          <div class="security__intro">
-            <p class="label">03 / Security</p>
-            <h2>Local by<br />construction.</h2>
-            <p>
-              The gateway is the only process your network can reach. Everything behind it stays on loopback, and the
-              credential never leaves the devices you paired.
-            </p>
-            <p class="security__note">No accounts. No relay. No telemetry.</p>
+      <section class="section section--rule" id="architecture">
+        <div class="wrap section__grid">
+          <div class="rail">
+            <span class="rail__num">02</span>
+            <span class="rail__label">Architecture</span>
           </div>
 
-          <dl class="facts">
-            <div>
-              <dt>Pairing is the credential</dt>
-              <dd>A short-lived six-digit code issues a signed, HttpOnly device cookie. Every request is checked against the paired-device list.</dd>
+          <div class="section__body">
+            <div class="split">
+              <div class="split__copy">
+                <h2>One listener.<br />One hop.</h2>
+                <p>
+                  The DSH listener never leaves <code>127.0.0.1</code>. The gateway binds the LAN address,
+                  authenticates the phone, and proxies to the app's loopback port. That is the whole path.
+                </p>
+                <p class="small-note">
+                  The gateway is additive. A busy port, a missing TLS file, or an unreachable upstream never stops the
+                  desktop app; the dialog reports what failed.
+                </p>
+              </div>
+
+              <figure class="diagram">
+                <div class="flow" role="img" aria-label="A phone connects to the gateway on port 7317, which proxies to the DeepSeek Harness server on loopback.">
+                  <div class="flow__node">
+                    <span>Phone</span>
+                    <b>your browser</b>
+                  </div>
+                  <span class="flow__arrow" aria-hidden="true">→</span>
+                  <div class="flow__node flow__node--key">
+                    <span>Gateway</span>
+                    <b>0.0.0.0:7317</b>
+                  </div>
+                  <span class="flow__arrow" aria-hidden="true">→</span>
+                  <div class="flow__node">
+                    <span>DSH</span>
+                    <b>127.0.0.1</b>
+                  </div>
+                </div>
+                <figcaption class="figcap">
+                  <span>Host rewritten. Origin stripped. WebSocket forwarded.</span>
+                  <span>If 7317 is taken, the gateway tries 7318–7326.</span>
+                </figcaption>
+                <p class="packet">GET /api/session/list <span aria-hidden="true">→</span> Host: 127.0.0.1:PORT</p>
+              </figure>
             </div>
-            <div>
-              <dt>Writes are fenced</dt>
-              <dd>Origin and Sec-Fetch checks guard state-changing requests and WebSocket upgrades.</dd>
+          </div>
+        </div>
+      </section>
+
+      <section class="security" id="security">
+        <div class="wrap section__grid">
+          <div class="rail rail--light">
+            <span class="rail__num">03</span>
+            <span class="rail__label">Security</span>
+          </div>
+
+          <div class="section__body">
+            <div class="security__top">
+              <h2>Local by<br />construction.</h2>
+              <p>
+                The gateway is the only process your network can reach. Pairing is the credential; everything behind
+                it stays on loopback.
+              </p>
             </div>
-            <div>
-              <dt>Revocation is immediate</dt>
-              <dd>Remove one phone, or rotate the signing secret to revoke every device at once.</dd>
-            </div>
-            <div>
-              <dt>TLS if you want it</dt>
-              <dd>Set <code>tlsCertFile</code> and <code>tlsKeyFile</code>. Plain HTTP is intended for a trusted home network.</dd>
-            </div>
-          </dl>
+
+            <dl class="facts">
+              <div class="fact">
+                <dt>Pairing</dt>
+                <dd>Six digits, five minutes, rate-limited. One use.</dd>
+              </div>
+              <div class="fact">
+                <dt>Session</dt>
+                <dd>A signed, HttpOnly device cookie. Thirty days.</dd>
+              </div>
+              <div class="fact">
+                <dt>Devices</dt>
+                <dd>A persistent allowlist. Remove one phone without touching the rest.</dd>
+              </div>
+              <div class="fact">
+                <dt>Network</dt>
+                <dd>LAN only. No relay, no account, no telemetry. TLS optional.</dd>
+              </div>
+            </dl>
+
+            <p class="creed">No account. No cloud. No public endpoint.</p>
+          </div>
         </div>
       </section>
 
       <section class="section section--install" id="install">
-        <div class="shell">
-          <div class="section-head section-head--wide">
-            <p class="label">04 / Install</p>
-            <h2>Install it from<br />the app.</h2>
-            <p class="section-head__copy">
-              DSH reserves the Desktop profile for itself, so the Plugins page is the supported installer. No terminal
-              step, and no second app on the phone.
+        <div class="wrap section__grid">
+          <div class="rail">
+            <span class="rail__num">04</span>
+            <span class="rail__label">Install</span>
+          </div>
+
+          <div class="section__body section__body--wide">
+            <h2>Install from<br />the app.</h2>
+            <p class="section__intro">
+              DSH owns its Desktop profile, so the CLI cannot install it. The Plugins page can. The npm package ships
+              the built host and browser bundles; no local build.
             </p>
-          </div>
 
-          <ol class="steps">
-            <li>
-              <span class="steps__num">1</span>
-              <h3>Open Plugins</h3>
-              <p>In DeepSeek Harness, open <strong>Plugins</strong> in the left sidebar and choose <strong>Add plugin</strong>.</p>
-            </li>
-            <li>
-              <span class="steps__num">2</span>
-              <h3>Install from npm</h3>
-              <p>Keep <strong>Registry</strong> on <strong>Official npm registry</strong>. Paste the package name and install.</p>
-            </li>
-            <li>
-              <span class="steps__num">3</span>
-              <h3>Pair your phone</h3>
-              <p>Click <strong>Link phone</strong>, scan the QR code, and the app opens on your phone.</p>
-            </li>
-          </ol>
+            <ol class="steps">
+              <li class="step">
+                <span class="step__num">1</span>
+                <h3>Open Plugins</h3>
+                <p>In DeepSeek Harness, open <strong>Plugins</strong> in the left sidebar.</p>
+              </li>
+              <li class="step">
+                <span class="step__num">2</span>
+                <h3>Install the package</h3>
+                <p>Keep the official npm registry selected and paste the package name.</p>
+              </li>
+              <li class="step">
+                <span class="step__num">3</span>
+                <h3>Pair the phone</h3>
+                <p>Click <strong>Link phone</strong>, scan the code, and the app opens.</p>
+              </li>
+            </ol>
 
-          <div class="install__package">
-            <div>
-              <span class="install__package-label">npm registry</span>
-              <code>@awbuilds/dsh-pocket@0.0.4</code>
+            <div class="package">
+              <div class="package__identity">
+                <span class="package__label">npm registry</span>
+                <code>@awbuilds/dsh-pocket@0.0.4</code>
+              </div>
+              <button class="copy" type="button" data-copy="@awbuilds/dsh-pocket@0.0.4">
+                <span>Copy package name</span>
+              </button>
             </div>
-            <button class="copy" type="button" data-copy="@awbuilds/dsh-pocket@0.0.4">
-              <span>Copy package name</span>
-            </button>
-          </div>
 
-          <div class="install__bottom">
-            <div class="alt">
-              <div class="alt__row"><span>Release tarball</span><code>awbuilds-dsh-pocket-0.0.4.tgz</code></div>
-              <div class="alt__row"><span>Local directory</span><code>packages/dsh-pocket</code></div>
-              <div class="alt__row"><span>GitHub</span><code>awbuilds/dsh-pocket</code></div>
+            <div class="alternatives">
+              <div class="alt">
+                <span>Release tarball</span>
+                <code>awbuilds-dsh-pocket-0.0.4.tgz</code>
+              </div>
+              <div class="alt">
+                <span>Local directory</span>
+                <code>packages/dsh-pocket</code>
+              </div>
+              <div class="alt">
+                <span>GitHub</span>
+                <code>awbuilds/dsh-pocket</code>
+              </div>
             </div>
-            <div class="install__notes">
-              <p>
-                Requires DeepSeek Harness Desktop <strong>0.2.1-rc.5</strong> on macOS, with the phone and the Mac on
-                the same Wi-Fi.
+
+            <div class="install__bottom">
+              <p class="requirements">
+                macOS with DeepSeek Harness Desktop <strong>0.2.1-rc.5</strong>. Phone and Mac on the same Wi-Fi.
               </p>
               <p class="install__links">
                 <a class="text-link" href="https://github.com/awbuilds/dsh-pocket/blob/main/docs/install.md" target="_blank" rel="noopener">Install guide <span aria-hidden="true">↗</span></a>
@@ -284,40 +341,45 @@
       </section>
     </main>
 
-    <footer class="site-footer">
-      <div class="shell footer__top">
-        <div class="footer__brand">
-          <a class="brand" href="#top">
-            <svg class="brand__mark" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-              <rect x="5.5" y="2.5" width="17" height="23" rx="5" stroke="currentColor" stroke-width="1.5" />
-              <path d="M10 15.5a4 4 0 0 1 8 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-              <circle cx="14" cy="19.6" r="1.35" fill="currentColor" />
-            </svg>
-            <span>DSH Pocket</span>
-          </a>
-          <p>The real DeepSeek Harness UI, on your phone, over your own network.</p>
+    <footer class="footer">
+      <div class="wrap">
+        <div class="footer__word"><span class="wordmark__dot" aria-hidden="true"></span>DSH POCKET</div>
+
+        <div class="footer__grid">
+          <p class="footer__tagline">
+            The real DeepSeek Harness UI on a paired phone, over your own network. A small, additive plugin.
+          </p>
+
+          <nav class="footer__links" aria-label="Footer">
+            <div>
+              <span>Page</span>
+              <a href="#surface">Surface</a>
+              <a href="#architecture">Architecture</a>
+              <a href="#security">Security</a>
+              <a href="#install">Install</a>
+            </div>
+            <div>
+              <span>Elsewhere</span>
+              <a href="https://github.com/awbuilds/dsh-pocket" target="_blank" rel="noopener">GitHub</a>
+              <a href="https://www.npmjs.com/package/@awbuilds/dsh-pocket" target="_blank" rel="noopener">npm</a>
+              <a href="https://github.com/awbuilds/dsh-pocket/releases" target="_blank" rel="noopener">Releases</a>
+              <a href="https://github.com/awbuilds/dsh-pocket/blob/main/LICENSE" target="_blank" rel="noopener">License</a>
+            </div>
+            <div>
+              <span>Docs</span>
+              <a href="https://github.com/awbuilds/dsh-pocket/blob/main/docs/install.md" target="_blank" rel="noopener">Install guide</a>
+              <a href="https://github.com/awbuilds/dsh-pocket/blob/main/docs/security.md" target="_blank" rel="noopener">Security</a>
+              <a href="https://github.com/awbuilds/dsh-pocket/blob/main/docs/architecture.md" target="_blank" rel="noopener">Architecture</a>
+              <a href="https://github.com/awbuilds/dsh-pocket/blob/main/docs/troubleshooting.md" target="_blank" rel="noopener">Troubleshooting</a>
+            </div>
+          </nav>
         </div>
 
-        <nav class="footer__links" aria-label="Footer">
-          <div>
-            <span>Page</span>
-            <a href="#features">Overview</a>
-            <a href="#how">Architecture</a>
-            <a href="#security">Security</a>
-            <a href="#install">Install</a>
-          </div>
-          <div>
-            <span>Elsewhere</span>
-            <a href="https://github.com/awbuilds/dsh-pocket" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://www.npmjs.com/package/@awbuilds/dsh-pocket" target="_blank" rel="noopener">npm</a>
-            <a href="https://github.com/awbuilds/dsh-pocket/blob/main/LICENSE" target="_blank" rel="noopener">License</a>
-          </div>
-        </nav>
-      </div>
-
-      <div class="shell footer__bottom">
-        <span>© <span id="year">2026</span> awbuilds · MIT licensed</span>
-        <span>Unofficial community plugin. DeepSeek Harness is a DeepSeek product.</span>
+        <div class="footer__bottom">
+          <span>© <span id="year">2026</span> awbuilds · MIT licensed</span>
+          <span>Unofficial community plugin. DeepSeek Harness is a DeepSeek product.</span>
+          <span>Built against DSH 0.2.1-rc.5</span>
+        </div>
       </div>
     </footer>
 
