@@ -21,9 +21,9 @@ is running. Use the app's own installer:
 1. Open **Plugins** in the left sidebar in DeepSeek Harness and click **Add
    plugin**.
 2. Provide one of:
-   - the npm package `@awbuilds/dsh-pocket@0.0.4`, with **Registry** set to
+   - the npm package `@awbuilds/dsh-pocket@0.0.5`, with **Registry** set to
      **Official npm registry**
-   - the release tarball: `awbuilds-dsh-pocket-0.0.4.tgz`
+   - the release tarball: `awbuilds-dsh-pocket-0.0.5.tgz`
    - the local package directory:
      `~/RealWorldProjects/deepseek_mobile/packages/dsh-pocket`
    - the GitHub repository: `https://github.com/awbuilds/dsh-pocket`
@@ -44,7 +44,7 @@ cd ~/RealWorldProjects/deepseek_mobile
 node scripts/install-desktop.mjs --manual
 ```
 
-`--manual` packs `awbuilds-dsh-pocket-0.0.4.tgz`, adds the dependency and bundle
+`--manual` packs `awbuilds-dsh-pocket-0.0.5.tgz`, adds the dependency and bundle
 to the Desktop profile with a backup, and runs the app's bundled pnpm. Reopen the
 app afterward. This is a manifest-level fallback; the in-app Plugins page is the
 supported path.

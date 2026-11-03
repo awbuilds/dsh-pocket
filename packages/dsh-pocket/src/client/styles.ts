@@ -50,6 +50,11 @@ html[data-pocket-mobile][data-pocket-drawer="open"] [data-pocket-sidebar] {
 html[data-pocket-mobile] [data-pocket-frame] [role="separator"] {
   display: none !important;
 }
+/* The mobile grid has no right column; its toggle would open an invisible panel. */
+html[data-pocket-mobile] [data-sidebar-right-expand],
+html[data-pocket-mobile] [data-sidebar-right-collapse] {
+  display: none !important;
+}
 html[data-pocket-mobile] [data-pocket-frame] {
   height: 100dvh;
 }
@@ -68,6 +73,76 @@ html[data-pocket-mobile] [data-pocket-frame] select {
   html[data-pocket-mobile] [data-pocket-frame] button,
   html[data-pocket-mobile] [data-pocket-frame] [role="button"] {
     min-height: 36px;
+  }
+}
+
+/* ── Settings: stack the nav above the content on phone widths ── */
+@media (max-width: 640px) {
+  html[data-pocket-mobile] [data-shortcut-modal="settings"] {
+    width: 100vw !important;
+    max-width: none !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-height: 100vh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    flex-direction: column !important;
+  }
+  html[data-pocket-mobile] [data-shortcut-modal="settings"] > nav {
+    width: 100% !important;
+    flex: none !important;
+    gap: 10px !important;
+    padding: calc(env(safe-area-inset-top, 0px) + 14px) 16px 0 !important;
+    border-bottom: 1px solid var(--dsw-alias-border-l3, rgba(255, 255, 255, 0.1)) !important;
+  }
+  html[data-pocket-mobile] [data-shortcut-modal="settings"] > nav > :first-child {
+    padding: 0 4px !important;
+  }
+  html[data-pocket-mobile] [data-shortcut-modal="settings"] > nav > :last-child {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    overflow: visible !important;
+    padding-bottom: 10px !important;
+  }
+  html[data-pocket-mobile] [data-shortcut-modal="settings"] > nav > :last-child > button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    height: 40px !important;
+    padding: 9px 14px !important;
+    white-space: nowrap !important;
+  }
+  html[data-pocket-mobile] [data-shortcut-modal="settings"] > div {
+    flex: 1 !important;
+    min-height: 0 !important;
+    width: 100% !important;
+  }
+  html[data-pocket-mobile] [data-shortcut-modal="settings"] > div > :first-child {
+    height: auto !important;
+    padding: 6px 12px 2px 16px !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+  }
+  /* The config file lives on the Mac; the close control is the only action here. */
+  html[data-pocket-mobile] [data-shortcut-modal="settings"] > div > :first-child > :first-child {
+    display: none !important;
+  }
+  html[data-pocket-mobile] [data-shortcut-modal="settings"] > div > :last-child {
+    padding: 0 16px calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  /* Account card: let the profile copy use the full width and move its link below. */
+  html[data-pocket-mobile] [data-shortcut-modal="settings"] div:has(> a[href*="platform.deepseek.com"]) {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+  /* Long group headers with a menu (e.g. Built-in plugins preset) wrap instead of clipping. */
+  html[data-pocket-mobile] [data-shortcut-modal="settings"] > div > :last-child div:has(button[aria-haspopup="menu"]) {
+    flex-wrap: wrap !important;
+  }
+  html[data-pocket-mobile] [data-shortcut-modal="settings"] > div > :last-child button[aria-haspopup="menu"] {
+    max-width: 100% !important;
   }
 }
 

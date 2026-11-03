@@ -38,8 +38,8 @@ mobile navigation bar, a session sheet, and the desktop sidebar as a drawer.
 plugin**, and install from one of:
 
 - **npm registry (recommended):** keep **Registry** on **Official npm registry**
-  and enter `@awbuilds/dsh-pocket@0.0.4`
-- the release tarball: `awbuilds-dsh-pocket-0.0.4.tgz`
+  and enter `@awbuilds/dsh-pocket@0.0.5`
+- the release tarball: `awbuilds-dsh-pocket-0.0.5.tgz`
 - the local package directory: `packages/dsh-pocket`
 - the GitHub repository: `https://github.com/awbuilds/dsh-pocket`
 

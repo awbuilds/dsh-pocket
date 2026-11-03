@@ -39,5 +39,5 @@ fix and a release before public disclosure.
 
 ## Supported versions
 
-`0.0.4` against DSH `0.2.1-rc.5`. A DSH upgrade requires a rebuild against the
+`0.0.5` against DSH `0.2.1-rc.5`. A DSH upgrade requires a rebuild against the
 new runtime; older pairings may need re-pairing after a revocation.
