@@ -1,0 +1,24 @@
+# dsh-pocket bundle layer, applied after the Web/Desktop bundle layers.
+#
+# One row is enough: the package's Node entry starts the gateway, and its
+# browser entry (declared through package.json `dsh.client`) supplies the
+# mobile bar and the "Link phone" dialog. Remote access is additive; nothing
+# here rebinds or replaces the DSH web server.
+- insert:
+    - id: pocket
+      name: dsh-pocket
+      config:
+        enabled: true
+        # LAN listener. The gateway tries this port, then the next nine.
+        bindHost: 0.0.0.0
+        port: 7317
+        portAttempts: 10
+        cookieMaxAgeDays: 30
+        pairingTtlSeconds: 300
+        pairingMaxAttempts: 10
+        pairingWindowSeconds: 300
+        pairingLockoutSeconds: 900
+        publicOrigins: []
+        # Serve HTTPS from the gateway instead of plain HTTP:
+        # tlsCertFile: /absolute/path/to/cert.pem
+        # tlsKeyFile: /absolute/path/to/key.pem
