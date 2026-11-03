@@ -18,6 +18,15 @@ html[data-pocket-mobile] body {
 html[data-pocket-mobile] [data-pocket-frame] {
   grid-template-columns: 0 minmax(0, 1fr) 0 !important;
 }
+/* The fixed drawer leaves the grid flow; keep the remaining tracks in place. */
+html[data-pocket-mobile] [data-pocket-frame] > [data-pocket-main] {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+}
+html[data-pocket-mobile] [data-pocket-frame] > [data-pocket-right] {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+}
 html[data-pocket-mobile] [data-pocket-frame] > :first-child,
 html[data-pocket-mobile] [data-pocket-sidebar] {
   position: fixed !important;

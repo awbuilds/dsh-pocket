@@ -1,6 +1,6 @@
 {
   "name": "@awbuilds/dsh-pocket",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "LAN mobile access for DeepSeek Harness Desktop: a pairing-authenticated gateway and a mobile PWA surface.",
   "type": "module",
   "license": "MIT",

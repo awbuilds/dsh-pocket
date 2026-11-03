@@ -27,7 +27,7 @@ export const name = 'dsh-pocket'
 /** Services that must exist before the gateway can mint upstream URLs. */
 export const inject = ['webServer', 'connection']
 
-const VERSION = '0.0.3'
+const VERSION = '0.0.4'
 
 /** Plugin configuration, validated by the Loader before `apply`. */
 export interface PocketConfig {

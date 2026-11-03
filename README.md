@@ -39,8 +39,8 @@ surface, and the desktop dialog listing it:
 from one of:
 
 - the local package directory: `packages/dsh-pocket`
-- the release tarball: `awbuilds-dsh-pocket-0.0.3.tgz`
-- the npm package (once published): `@awbuilds/dsh-pocket@0.0.3`
+- the release tarball: `awbuilds-dsh-pocket-0.0.4.tgz`
+- the npm package (once published): `@awbuilds/dsh-pocket@0.0.4`
 
 Enable the **`@awbuilds/dsh-pocket`** bundle. If **Link phone** does not appear
 at the bottom of the sidebar, restart the app once.

@@ -23,8 +23,8 @@ is running. Use the app's own installer:
 3. Provide one of:
    - the local package directory:
      `~/RealWorldProjects/deepseek_mobile/packages/dsh-pocket`
-   - the release tarball: `awbuilds-dsh-pocket-0.0.3.tgz`
-   - after npm publication: `@awbuilds/dsh-pocket@0.0.3`
+   - the release tarball: `awbuilds-dsh-pocket-0.0.4.tgz`
+   - after npm publication: `@awbuilds/dsh-pocket@0.0.4`
 4. Enable the **`@awbuilds/dsh-pocket`** bundle.
 5. If **Link phone** does not appear at the bottom of the sidebar, restart
    DeepSeek Harness once.
@@ -42,7 +42,7 @@ cd ~/RealWorldProjects/deepseek_mobile
 node scripts/install-desktop.mjs --manual
 ```
 
-`--manual` packs `awbuilds-dsh-pocket-0.0.3.tgz`, adds the dependency and bundle
+`--manual` packs `awbuilds-dsh-pocket-0.0.4.tgz`, adds the dependency and bundle
 to the Desktop profile with a backup, and runs the app's bundled pnpm. Reopen the
 app afterward. This is a manifest-level fallback; the in-app Plugins page is the
 supported path.

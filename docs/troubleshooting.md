@@ -94,7 +94,7 @@ fresh, or remove the device in **Link phone** and pair again.
 ## The app's Plugins page rejects the local package
 
 Use the generated tarball instead: run `cd packages/dsh-pocket && npm pack` and
-select `awbuilds-dsh-pocket-0.0.3.tgz` in the Plugins page. Keep the tarball where
+select `awbuilds-dsh-pocket-0.0.4.tgz` in the Plugins page. Keep the tarball where
 it is; the profile references that path. The npm package is an alternative once
 published.
 

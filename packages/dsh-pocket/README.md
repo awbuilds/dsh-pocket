@@ -15,6 +15,20 @@ over your local network.
 - Mobile UI: bottom bar, session sheet, drawer sidebar, safe-area and keyboard fixes.
 - No public exposure by default; optional TLS via `tlsCertFile` / `tlsKeyFile`.
 
+## Release notes
+
+### 0.0.4
+
+- Fixed the phone view rendering blank after pairing: the drawer no longer
+  pulls the main chat column out of the app's grid. Session history, the
+  composer, the session sheet, and the drawer all render correctly, and the
+  desktop layout is unchanged.
+
+### 0.0.3
+
+- Paired-device list with per-device removal, and reconnect fixes for
+  Android/Chrome after a host restart.
+
 ## Install (Desktop)
 
 The Desktop profile is managed by the app; DSH 0.2.1's CLI rejects
@@ -22,8 +36,8 @@ The Desktop profile is managed by the app; DSH 0.2.1's CLI rejects
 
 1. Open **Plugins** in the left sidebar.
 2. Install a bundle from a local path, the release tarball
-   (`awbuilds-dsh-pocket-0.0.3.tgz`), or the npm package
-   (`@awbuilds/dsh-pocket@0.0.3`, once published).
+   (`awbuilds-dsh-pocket-0.0.4.tgz`), or the npm package
+   (`@awbuilds/dsh-pocket@0.0.4`, once published).
 3. Enable the **`@awbuilds/dsh-pocket`** bundle.
 4. If **Link phone** does not appear, restart DeepSeek Harness once.
 

@@ -14,6 +14,8 @@ export const MOBILE_QUERY = '(max-width: 900px)'
 const MOBILE_ATTRIBUTE = 'data-pocket-mobile'
 const FRAME_ATTRIBUTE = 'data-pocket-frame'
 const SIDEBAR_ATTRIBUTE = 'data-pocket-sidebar'
+const MAIN_ATTRIBUTE = 'data-pocket-main'
+const RIGHT_ATTRIBUTE = 'data-pocket-right'
 
 function mediaQuery(): MediaQueryList | undefined {
   if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return undefined
@@ -34,11 +36,20 @@ export function useMobile(): boolean {
   return mobile
 }
 
+function tagColumns(frame: HTMLElement): void {
+  const [sidebar, main, right] = frame.children
+  if (sidebar instanceof HTMLElement) sidebar.setAttribute(SIDEBAR_ATTRIBUTE, '')
+  // The drawer becomes position: fixed, which takes it out of the frame's grid
+  // flow. Without explicit places the remaining columns auto-place one track to
+  // the left, collapsing the chat into the zero-width rail.
+  if (main instanceof HTMLElement) main.setAttribute(MAIN_ATTRIBUTE, '')
+  if (right instanceof HTMLElement) right.setAttribute(RIGHT_ATTRIBUTE, '')
+}
+
 function tagFrame(): void {
   const existing = document.querySelector<HTMLElement>(`[${FRAME_ATTRIBUTE}]`)
   if (existing !== null) {
-    const sidebar = existing.firstElementChild
-    if (sidebar instanceof HTMLElement) sidebar.setAttribute(SIDEBAR_ATTRIBUTE, '')
+    tagColumns(existing)
     return
   }
   // The frame is the grid that carries the sidebar-collapsed state. It exists
@@ -46,8 +57,7 @@ function tagFrame(): void {
   const frame = document.querySelector<HTMLElement>('[data-sidebar-collapsed]')
   if (frame === null) return
   frame.setAttribute(FRAME_ATTRIBUTE, '')
-  const sidebar = frame.firstElementChild
-  if (sidebar instanceof HTMLElement) sidebar.setAttribute(SIDEBAR_ATTRIBUTE, '')
+  tagColumns(frame)
 }
 
 function setMobileAttribute(mobile: boolean): void {
@@ -119,10 +129,14 @@ export function installMobile(): () => void {
     document.documentElement.removeAttribute('data-pocket-drawer')
     document.documentElement.style.removeProperty('--pocket-kb')
     document.documentElement.style.removeProperty('--pocket-vh')
-    document.querySelectorAll(`[${FRAME_ATTRIBUTE}], [${SIDEBAR_ATTRIBUTE}]`).forEach((node) => {
-      node.removeAttribute(FRAME_ATTRIBUTE)
-      node.removeAttribute(SIDEBAR_ATTRIBUTE)
-    })
+    document
+      .querySelectorAll(`[${FRAME_ATTRIBUTE}], [${SIDEBAR_ATTRIBUTE}], [${MAIN_ATTRIBUTE}], [${RIGHT_ATTRIBUTE}]`)
+      .forEach((node) => {
+        node.removeAttribute(FRAME_ATTRIBUTE)
+        node.removeAttribute(SIDEBAR_ATTRIBUTE)
+        node.removeAttribute(MAIN_ATTRIBUTE)
+        node.removeAttribute(RIGHT_ATTRIBUTE)
+      })
   }
 }
 

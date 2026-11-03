@@ -207,12 +207,14 @@ describe('PairDialog', () => {
 describe('installMobile', () => {
   it('marks the document and the frame, exposes the drawer, and cleans up', () => {
     document.body.innerHTML =
-      '<div data-sidebar-collapsed><div id="sidebar"></div><div id="center"></div></div>'
+      '<div data-sidebar-collapsed><div id="sidebar"></div><div id="center"></div><div id="right"></div><div id="bottom"></div></div>'
     const dispose = installMobile()
     const frame = document.querySelector('[data-sidebar-collapsed]') as HTMLElement
     expect(document.documentElement.hasAttribute('data-pocket-mobile')).toBe(true)
     expect(frame.hasAttribute('data-pocket-frame')).toBe(true)
     expect(frame.firstElementChild?.hasAttribute('data-pocket-sidebar')).toBe(true)
+    expect(frame.children[1]?.hasAttribute('data-pocket-main')).toBe(true)
+    expect(frame.children[2]?.hasAttribute('data-pocket-right')).toBe(true)
 
     setDrawerOpen(true)
     expect(document.documentElement.getAttribute('data-pocket-drawer')).toBe('open')
@@ -222,5 +224,6 @@ describe('installMobile', () => {
     dispose()
     expect(document.documentElement.hasAttribute('data-pocket-mobile')).toBe(false)
     expect(frame.hasAttribute('data-pocket-frame')).toBe(false)
+    expect(frame.querySelector('[data-pocket-sidebar], [data-pocket-main], [data-pocket-right]')).toBeNull()
   })
 })
