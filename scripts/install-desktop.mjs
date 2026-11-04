@@ -24,7 +24,7 @@ import { DSH_VERSION, enableBundle, isBundleEnabled, profileDir, readProfileMani
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)))
 const PACKAGE_DIR = join(ROOT, 'packages', 'dsh-pocket')
 const PACKAGE_NAME = '@awbuilds/dsh-pocket'
-const PACKAGE_VERSION = '0.0.5'
+const PACKAGE_VERSION = '0.0.6'
 const HOME = process.env.DSH_HOME ?? join(homedir(), '.dsh')
 const DEFAULT_TARBALL = join(PACKAGE_DIR, `awbuilds-dsh-pocket-${PACKAGE_VERSION}.tgz`)
 const APP_BINARY = '/Applications/DeepSeek Harness.app/Contents/MacOS/DeepSeek Harness'

@@ -146,6 +146,34 @@ html[data-pocket-mobile] [data-pocket-frame] select {
   }
 }
 
+/* ── Review: phone layout for the rightbar fullscreen diff ── */
+@media (max-width: 640px) {
+  /* The pane-split control is disabled by width here and only adds noise. */
+  html[data-pocket-mobile] [data-dockkit-split-button] {
+    display: none !important;
+  }
+  /* Opening a file in a desktop IDE/Finder is not a phone action. */
+  html[data-pocket-mobile] div:has(> [data-open-path-open]) {
+    display: none !important;
+  }
+  /* Keep the tab title clear of its close control. */
+  html[data-pocket-mobile] [data-dockkit-tab-title] {
+    padding-right: 26px !important;
+  }
+  html[data-pocket-mobile] [data-dockkit-tab-close] {
+    width: 28px !important;
+    min-width: 28px !important;
+  }
+  /* Side-by-side diff panes are 180px each on a phone; stack them full width. */
+  html[data-pocket-mobile] [data-review-view="split"] > div {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  html[data-pocket-mobile] [data-review-view="split"] > div > div + div {
+    border-left: 0 !important;
+    border-top: 0.5px solid var(--dsw-alias-border-l3) !important;
+  }
+}
+
 /* ── Bottom bar (shell.bottom occupant) ── */
 .pocket-bar {
   display: flex;

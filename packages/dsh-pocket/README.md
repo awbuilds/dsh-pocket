@@ -23,6 +23,13 @@ over your local network.
 
 ## Release notes
 
+### 0.0.6
+
+- Fixed the phone Review/diff screen: the tab close control no longer overlaps
+  its title, the split diff stacks its panes vertically below 640 px, and the
+  desktop-only pane-split and Open in Finder/IDE actions are hidden on phones.
+- Includes the 0.0.5 full-screen Settings fixes.
+
 ### 0.0.5
 
 - Fixed the phone Settings screen: it now opens full-screen, stacks navigation
@@ -50,8 +57,8 @@ The Desktop profile is managed by the app; DSH 0.2.1's CLI rejects
 
 1. Open **Plugins** in the left sidebar and click **Add plugin**.
 2. Keep **Registry** on **Official npm registry** and enter
-   `@awbuilds/dsh-pocket@0.0.5`.
-   Alternatively, install the release tarball (`awbuilds-dsh-pocket-0.0.5.tgz`)
+   `@awbuilds/dsh-pocket@0.0.6`.
+   Alternatively, install the release tarball (`awbuilds-dsh-pocket-0.0.6.tgz`)
    or the local package directory.
 3. Enable the **`@awbuilds/dsh-pocket`** bundle.
 4. If **Link phone** does not appear, restart DeepSeek Harness once.
