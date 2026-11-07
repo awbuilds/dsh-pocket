@@ -23,6 +23,14 @@ over your local network.
 
 ## Release notes
 
+### 0.0.7
+
+- Supports DeepSeek Harness `0.2.2-rc.1`; the peer range now accepts
+  `>=0.2.1-rc.5` so a DSH patch/rc update does not disable the bundle.
+- Frame columns are tagged and pinned from DSH's stable rightbar marker, so a
+  future frame shape cannot auto-place the chat into the zero-width track.
+- Includes the 0.0.6 Review/diff and 0.0.5 Settings phone fixes.
+
 ### 0.0.6
 
 - Fixed the phone Review/diff screen: the tab close control no longer overlaps
@@ -57,8 +65,8 @@ The Desktop profile is managed by the app; DSH 0.2.1's CLI rejects
 
 1. Open **Plugins** in the left sidebar and click **Add plugin**.
 2. Keep **Registry** on **Official npm registry** and enter
-   `@awbuilds/dsh-pocket@0.0.6`.
-   Alternatively, install the release tarball (`awbuilds-dsh-pocket-0.0.6.tgz`)
+   `@awbuilds/dsh-pocket@0.0.7`.
+   Alternatively, install the release tarball (`awbuilds-dsh-pocket-0.0.7.tgz`)
    or the local package directory.
 3. Enable the **`@awbuilds/dsh-pocket`** bundle.
 4. If **Link phone** does not appear, restart DeepSeek Harness once.

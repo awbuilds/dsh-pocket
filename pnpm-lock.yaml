@@ -209,7 +209,7 @@ importers:
   packages/dsh-pocket:
     dependencies:
       '@deepseek-ai/dsh':
-        specifier: 0.2.1-rc.5
+        specifier: '>=0.2.1-rc.5'
         version: 0.2.1-rc.5(a231310e545076a27e2cbd03a19a10df)
     devDependencies:
       '@deepseek-ai/cordis':

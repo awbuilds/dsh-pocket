@@ -94,11 +94,12 @@ fresh, or remove the device in **Link phone** and pair again.
 ## The app's Plugins page rejects the local package
 
 Use the generated tarball instead: run `cd packages/dsh-pocket && npm pack` and
-select `awbuilds-dsh-pocket-0.0.6.tgz` in the Plugins page. Keep the tarball where
+select `awbuilds-dsh-pocket-0.0.7.tgz` in the Plugins page. Keep the tarball where
 it is; the profile references that path. The npm registry package
-(`@awbuilds/dsh-pocket@0.0.6`) is an alternative.
+(`@awbuilds/dsh-pocket@0.0.7`) is an alternative.
 
 ## Version mismatch after a DSH update
 
-The bundle peer-pins `0.2.1-rc.5`. Rebuild and reinstall against the new
-runtime, or grant a version exemption only after checking the slot/service APIs.
+The bundle is tested against `0.2.2-rc.1` and accepts `>=0.2.1-rc.5`. If a future
+release changes the slot/service APIs, rebuild and reinstall, or grant a version
+exemption only after checking those APIs.

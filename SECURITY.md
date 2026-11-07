@@ -11,7 +11,7 @@ Do not open a public issue for a security problem. Use GitHub's private
 vulnerability reporting on this repository (**Security → Report a
 vulnerability**) and include:
 
-- the package version and DSH runtime version (`0.2.1-rc.5`);
+- the package version and DSH runtime version (`0.2.2-rc.1`);
 - the operating system and network setup;
 - impact and a minimal reproduction;
 - whether a paired device, an unpaired LAN client, or a local process is the
@@ -39,5 +39,6 @@ fix and a release before public disclosure.
 
 ## Supported versions
 
-`0.0.6` against DSH `0.2.1-rc.5`. A DSH upgrade requires a rebuild against the
-new runtime; older pairings may need re-pairing after a revocation.
+`0.0.7` against DSH `0.2.2-rc.1` (peer range `>=0.2.1-rc.5`). A DSH upgrade that
+changes slot or service APIs requires a rebuild; older pairings may need
+re-pairing after a revocation.

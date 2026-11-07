@@ -37,13 +37,21 @@ export function useMobile(): boolean {
 }
 
 function tagColumns(frame: HTMLElement): void {
-  const [sidebar, main, right] = frame.children
-  if (sidebar instanceof HTMLElement) sidebar.setAttribute(SIDEBAR_ATTRIBUTE, '')
+  const right =
+    frame.querySelector<HTMLElement>(':scope > [data-rightbar-col]') ??
+    (frame.children[2] instanceof HTMLElement ? frame.children[2] : undefined)
+  const main =
+    (right?.previousElementSibling instanceof HTMLElement ? right.previousElementSibling : undefined) ??
+    (frame.children[1] instanceof HTMLElement ? frame.children[1] : undefined)
+  const sidebar =
+    (main?.previousElementSibling instanceof HTMLElement ? main.previousElementSibling : undefined) ??
+    (frame.children[0] instanceof HTMLElement ? frame.children[0] : undefined)
+  if (sidebar !== undefined) sidebar.setAttribute(SIDEBAR_ATTRIBUTE, '')
   // The drawer becomes position: fixed, which takes it out of the frame's grid
   // flow. Without explicit places the remaining columns auto-place one track to
   // the left, collapsing the chat into the zero-width rail.
-  if (main instanceof HTMLElement) main.setAttribute(MAIN_ATTRIBUTE, '')
-  if (right instanceof HTMLElement) right.setAttribute(RIGHT_ATTRIBUTE, '')
+  if (main !== undefined) main.setAttribute(MAIN_ATTRIBUTE, '')
+  if (right !== undefined) right.setAttribute(RIGHT_ATTRIBUTE, '')
 }
 
 function tagFrame(): void {

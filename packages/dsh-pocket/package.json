@@ -1,6 +1,6 @@
 {
   "name": "@awbuilds/dsh-pocket",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "LAN mobile access for DeepSeek Harness Desktop: a pairing-authenticated gateway and a mobile PWA surface.",
   "type": "module",
   "license": "MIT",
@@ -39,7 +39,7 @@
     }
   },
   "peerDependencies": {
-    "@deepseek-ai/dsh": "0.2.1-rc.5",
+    "@deepseek-ai/dsh": ">=0.2.1-rc.5",
     "@deepseek-ai/schemastery": "~3.18.4"
   },
   "devDependencies": {

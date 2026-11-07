@@ -6,7 +6,7 @@ reconfigure or replace the app's loopback web server.
 
 ## Prerequisites
 
-- macOS with DeepSeek Harness Desktop 0.2.1-rc.5 (the bundle pins this runtime).
+- macOS with DeepSeek Harness Desktop 0.2.2-rc.1 (tested; the bundle accepts `>=0.2.1-rc.5`).
 - Node.js 22 or newer and pnpm 9+ only if you build from source.
 - The phone and the Mac on the same Wi-Fi/LAN, without guest-network client
   isolation.
@@ -21,9 +21,9 @@ is running. Use the app's own installer:
 1. Open **Plugins** in the left sidebar in DeepSeek Harness and click **Add
    plugin**.
 2. Provide one of:
-   - the npm package `@awbuilds/dsh-pocket@0.0.6`, with **Registry** set to
+   - the npm package `@awbuilds/dsh-pocket@0.0.7`, with **Registry** set to
      **Official npm registry**
-   - the release tarball: `awbuilds-dsh-pocket-0.0.6.tgz`
+   - the release tarball: `awbuilds-dsh-pocket-0.0.7.tgz`
    - the local package directory:
      `~/RealWorldProjects/deepseek_mobile/packages/dsh-pocket`
    - the GitHub repository: `https://github.com/awbuilds/dsh-pocket`
@@ -44,7 +44,7 @@ cd ~/RealWorldProjects/deepseek_mobile
 node scripts/install-desktop.mjs --manual
 ```
 
-`--manual` packs `awbuilds-dsh-pocket-0.0.6.tgz`, adds the dependency and bundle
+`--manual` packs `awbuilds-dsh-pocket-0.0.7.tgz`, adds the dependency and bundle
 to the Desktop profile with a backup, and runs the app's bundled pnpm. Reopen the
 app afterward. This is a manifest-level fallback; the in-app Plugins page is the
 supported path.
@@ -87,12 +87,11 @@ every phone immediately. Restarting the Mac/DSH does not require re-pairing.
 
 ## Update after a DSH upgrade
 
-The bundle pins DSH `0.2.1-rc.5`. If the app updates, update
-`packages/dsh-pocket/package.json`'s `@deepseek-ai/dsh` peer (and the matching
-`@deepseek-ai/dsh-*` dev dependencies), rebuild, repack, and install the new
-tarball from **Plugins** in the left sidebar. The plugin manager may offer a version
-exemption instead; only accept it after checking that the slot and service APIs
-used by this bundle are unchanged.
+The bundle is tested against DSH `0.2.2-rc.1` and accepts `>=0.2.1-rc.5`. If a
+future DSH release changes the slot or service APIs used here, update the
+matching `@deepseek-ai/dsh-*` dev dependencies, rebuild, repack, and install the
+new tarball from **Plugins**. The plugin manager may offer a version exemption
+instead; only accept it after checking those APIs are unchanged.
 
 ## Uninstall
 

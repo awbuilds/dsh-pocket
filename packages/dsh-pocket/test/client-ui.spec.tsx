@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { MobileBar } from '../src/client/MobileBar.tsx'
 import { PairDialog } from '../src/client/PairDialog.tsx'
 import { setDrawerOpen, installMobile } from '../src/client/mobile.ts'
+import { styles } from '../src/client/styles.ts'
 import type { PocketInfo } from '../src/shared/types.ts'
 
 function mockMatchMedia(matches: boolean): void {
@@ -207,14 +208,15 @@ describe('PairDialog', () => {
 describe('installMobile', () => {
   it('marks the document and the frame, exposes the drawer, and cleans up', () => {
     document.body.innerHTML =
-      '<div data-sidebar-collapsed><div id="sidebar"></div><div id="center"></div><div id="right"></div><div id="bottom"></div></div>'
+      '<div data-sidebar-collapsed><div id="title"></div><div id="sidebar"></div><div id="center"></div><div id="right" data-rightbar-col></div><div id="bottom"></div></div>'
     const dispose = installMobile()
     const frame = document.querySelector('[data-sidebar-collapsed]') as HTMLElement
     expect(document.documentElement.hasAttribute('data-pocket-mobile')).toBe(true)
     expect(frame.hasAttribute('data-pocket-frame')).toBe(true)
-    expect(frame.firstElementChild?.hasAttribute('data-pocket-sidebar')).toBe(true)
-    expect(frame.children[1]?.hasAttribute('data-pocket-main')).toBe(true)
-    expect(frame.children[2]?.hasAttribute('data-pocket-right')).toBe(true)
+    expect(frame.querySelector('#sidebar')?.hasAttribute('data-pocket-sidebar')).toBe(true)
+    expect(frame.querySelector('#center')?.hasAttribute('data-pocket-main')).toBe(true)
+    expect(frame.querySelector('#right')?.hasAttribute('data-pocket-right')).toBe(true)
+    expect(frame.querySelector('#title')?.hasAttribute('data-pocket-sidebar')).toBe(false)
 
     setDrawerOpen(true)
     expect(document.documentElement.getAttribute('data-pocket-drawer')).toBe('open')
@@ -225,5 +227,10 @@ describe('installMobile', () => {
     expect(document.documentElement.hasAttribute('data-pocket-mobile')).toBe(false)
     expect(frame.hasAttribute('data-pocket-frame')).toBe(false)
     expect(frame.querySelector('[data-pocket-sidebar], [data-pocket-main], [data-pocket-right]')).toBeNull()
+  })
+
+  it('pins the frame columns from DSH’s own rightbar marker', () => {
+    expect(styles).toContain('> [data-rightbar-col]')
+    expect(styles).toContain(':has(+ [data-rightbar-col])')
   })
 })

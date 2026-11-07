@@ -123,6 +123,15 @@ export function MobileBar({ ctx, useSessions, useSessionStatus }: MobileBarProps
     const onClick = (event: Event): void => {
       const target = event.target
       if (!(target instanceof Element)) return
+      // Menu triggers open a popover anchored to the drawer; closing the drawer
+      // here would unmount the menu before it can be used.
+      if (
+        target.closest(
+          '[aria-haspopup="menu"], [aria-label="Account menu"], [aria-label="View options"], [aria-label="More"], [aria-label="Add workspace"], [aria-label^="Workspace actions"]',
+        ) !== null
+      ) {
+        return
+      }
       if (target.closest('button, a, [role="button"], [data-row-key]') === null) return
       window.setTimeout(() => closeDrawer(), 220)
     }

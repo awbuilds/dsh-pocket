@@ -27,6 +27,16 @@ html[data-pocket-mobile] [data-pocket-frame] > [data-pocket-right] {
   grid-column: 3 !important;
   grid-row: 1 !important;
 }
+/* Same pinning from DSH's own marker, so a future frame shape still cannot
+   auto-place the chat into the zero-width track. */
+html[data-pocket-mobile] [data-pocket-frame] > [data-rightbar-col] {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+}
+html[data-pocket-mobile] [data-pocket-frame] > :has(+ [data-rightbar-col]) {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+}
 html[data-pocket-mobile] [data-pocket-frame] > :first-child,
 html[data-pocket-mobile] [data-pocket-sidebar] {
   position: fixed !important;
@@ -123,10 +133,6 @@ html[data-pocket-mobile] [data-pocket-frame] select {
     padding: 6px 12px 2px 16px !important;
     align-items: center !important;
     justify-content: flex-end !important;
-  }
-  /* The config file lives on the Mac; the close control is the only action here. */
-  html[data-pocket-mobile] [data-shortcut-modal="settings"] > div > :first-child > :first-child {
-    display: none !important;
   }
   html[data-pocket-mobile] [data-shortcut-modal="settings"] > div > :last-child {
     padding: 0 16px calc(16px + env(safe-area-inset-bottom, 0px)) !important;

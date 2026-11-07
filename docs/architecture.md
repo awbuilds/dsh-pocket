@@ -96,7 +96,7 @@ only carries the transport.
 
 ## Version coupling
 
-The bundle targets DSH **0.2.1-rc.5**. It relies on:
+The bundle targets DSH **0.2.2-rc.1** (peer `>=0.2.1-rc.5`). It relies on:
 
 - `shell.bottom` and `sidebar.footer.action` slots (0.2.1);
 - `ctx.layout`, `ctx.sessions`, `ctx.uiWorkspace`, `ctx.slots`;

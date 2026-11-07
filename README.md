@@ -38,8 +38,8 @@ mobile navigation bar, a session sheet, and the desktop sidebar as a drawer.
 plugin**, and install from one of:
 
 - **npm registry (recommended):** keep **Registry** on **Official npm registry**
-  and enter `@awbuilds/dsh-pocket@0.0.6`
-- the release tarball: `awbuilds-dsh-pocket-0.0.6.tgz`
+  and enter `@awbuilds/dsh-pocket@0.0.7`
+- the release tarball: `awbuilds-dsh-pocket-0.0.7.tgz`
 - the local package directory: `packages/dsh-pocket`
 - the GitHub repository: `https://github.com/awbuilds/dsh-pocket`
 
@@ -95,14 +95,15 @@ Over plain HTTP, iOS *Add to Home Screen* works while Chrome's install prompt ne
 
 ## Compatibility
 
-Built against DSH **0.2.1-rc.5** (the runtime bundled in the Desktop app). The
-bundle declares that peer; a runtime upgrade needs a rebuild against the new
-version. See [docs/install.md](docs/install.md#update-after-a-dsh-upgrade).
+Tested against DSH **0.2.2-rc.1** (the runtime bundled in the current Desktop
+app). The bundle accepts `>=0.2.1-rc.5`, so patch/rc updates install without a
+peer change; a later DSH that changes slot or service APIs may still need a
+rebuild. See [docs/install.md](docs/install.md#update-after-a-dsh-upgrade).
 
 ## Status
 
 - Automated: 64 unit/integration/component tests, typecheck, host + client builds.
-- Verified against a real 0.2.1-rc.5 host: pairing, proxying, boot graph, plugin
+- Verified against a real 0.2.2-rc.1 host: pairing, proxying, boot graph, plugin
   bundle, WebSocket mux, mobile bar, session sheet, drawer, desktop dialog, and
   revocation.
 - Verified on a physical **Moto G40 Fusion** (Android 12, Chrome 156): QR
