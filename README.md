@@ -91,7 +91,7 @@ halves: the host entry starts the gateway and the browser entry adds the mobile
 surface through the app's own slot system (`shell.bottom`,
 `sidebar.footer.action`).
 
-Over plain HTTP, iOS *Add to Home Screen* works while Chrome's install prompt needs TLS. Set `tlsCertFile` / `tlsKeyFile` for an HTTPS gateway.
+Over plain HTTP, iOS *Add to Home Screen* works while Chrome's install prompt needs TLS. Set `tlsCertFile` / `tlsKeyFile` for an HTTPS gateway; [Install as a phone app](docs/install.md#install-as-a-phone-app-pwa) has a local-CA recipe that makes it installable.
 
 ## Compatibility
 
