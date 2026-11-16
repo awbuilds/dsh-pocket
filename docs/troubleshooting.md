@@ -45,6 +45,15 @@ get a fresh code. Repeated failures lock the phone address for 15 minutes by
 default; wait, or restart the gateway (restart DSH) to clear the in-memory
 limiter.
 
+## The phone warns about the gateway certificate
+
+The phone does not trust the local CA that signed the gateway certificate.
+Install that CA as described in [Install as a phone
+app](install.md#install-as-a-phone-app-pwa). On Android it must be imported
+through **Settings → Security and privacy → More security settings →
+Encryption & credentials → Install a certificate → CA certificate**, and it
+appears under **Trusted credentials → User**. Newer Android refuses a CA opened
+from a file manager with "Can't install CA certificates".
 ## The phone shows the app but the Mac's session list is empty
 
 The phone is talking to the same host, so the list should match. If it does not,
