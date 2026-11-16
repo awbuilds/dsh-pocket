@@ -14,6 +14,8 @@ keyboard or safe-area behavior.
 - [ ] After pairing, reloading the app needs no code.
 - [ ] **Revoke devices** sends the phone back to `/pair` immediately.
 - [ ] A second phone can pair independently.
+- [ ] On Android 17, the browser holds the **Nearby devices** permission; the
+      pairing page loads instead of `ERR_TOO_MANY_RETRIES`.
 
 ## Layout
 
