@@ -33,10 +33,45 @@ The desktop app keeps working in every one of these cases.
 - The dialog lists every LAN address; try each one (VPN/Tailscale addresses may
   sort after Wi-Fi).
 - Allow incoming connections for DeepSeek Harness in **System Settings →
-  Network → Firewall**.
+  Network → Firewall**; on Windows, allow inbound TCP `7317` for the app on the
+  Private profile.
+- On Android 17, Chromium browsers also need the **Nearby devices** permission;
+  see the next section.
 - If the Mac's IP changed, reopen the dialog and scan the new QR. The old
   bookmark will not resolve.
 - `http://127.0.0.1:7317` works only on the Mac itself.
+
+## Android 17 browsers report ERR_TOO_MANY_RETRIES for LAN addresses
+
+Android 17 gates access to private IP addresses behind the **Nearby devices**
+runtime permission (`ACCESS_LOCAL_NETWORK`). Chromium-based browsers (Chrome,
+Brave, Edge) fail every request to a `192.168.*`, `10.*` or `172.16-31.*`
+address until that permission is granted, and they surface the denial as
+`ERR_TOO_MANY_RETRIES` rather than a permission error. The router's own page
+fails the same way, which distinguishes this from a gateway problem.
+
+Grant it in **Settings → Apps → <browser> → Permissions → Nearby devices →
+Allow**, then reload the tab. For debugging over USB:
+
+```bash
+adb shell cmd appops set --uid <uid> ACCESS_LOCAL_NETWORK allow
+```
+
+`<uid>` comes from `adb shell cmd package list packages -U <package>`.
+
+Browsers that already hold the permission (for example Samsung Internet) work
+meanwhile, and requests made outside the browser are unaffected, so a phone can
+have a healthy LAN path while its default browser still fails.
+
+## The phone warns about the gateway certificate
+
+The phone does not trust the local CA that signed the gateway certificate.
+Install that CA as described in [Install as a phone
+app](install.md#install-as-a-phone-app-pwa). On Android it must be imported
+through **Settings → Security and privacy → More security settings →
+Encryption & credentials → Install a certificate → CA certificate**, and it
+appears under **Trusted credentials → User**. Newer Android refuses a CA opened
+from a file manager with "Can't install CA certificates".
 
 ## The QR scans but the code is rejected
 

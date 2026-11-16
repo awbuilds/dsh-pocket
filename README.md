@@ -91,7 +91,7 @@ halves: the host entry starts the gateway and the browser entry adds the mobile
 surface through the app's own slot system (`shell.bottom`,
 `sidebar.footer.action`).
 
-Over plain HTTP, iOS *Add to Home Screen* works while Chrome's install prompt needs TLS. Set `tlsCertFile` / `tlsKeyFile` for an HTTPS gateway.
+Over plain HTTP, iOS *Add to Home Screen* works while Chrome's install prompt needs TLS. Set `tlsCertFile` / `tlsKeyFile` for an HTTPS gateway; [Install as a phone app](docs/install.md#install-as-a-phone-app-pwa) has a local-CA recipe that makes it installable.
 
 ## Compatibility
 
@@ -99,6 +99,10 @@ Tested against DSH **0.2.2-rc.1** (the runtime bundled in the current Desktop
 app). The bundle accepts `>=0.2.1-rc.5`, so patch/rc updates install without a
 peer change; a later DSH that changes slot or service APIs may still need a
 rebuild. See [docs/install.md](docs/install.md#update-after-a-dsh-upgrade).
+
+On Android 17, Chromium browsers additionally need the **Nearby devices**
+permission before they can reach any LAN address; see
+[docs/troubleshooting.md](docs/troubleshooting.md#android-17-browsers-report-err_too_many_retries-for-lan-addresses).
 
 ## Status
 
